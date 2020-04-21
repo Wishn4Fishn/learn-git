@@ -1,0 +1,476 @@
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Git Essential Training: The Basics</title>
+</head>
+<body style="background-color:#D3D3D3;">
+<h1 title="notes from LinkedIn training course by Kevin Skoglund.";style="font-size:60px;"><center>Git Essential Training: The Basics</center></h1>
+<ol type="1">
+	<li><font color=blue>What is Git?</font></li>
+	<ul style="list-style-type:disc;">
+		<li>version control</li>
+		<li>history behind git</li>
+		<li>About distributed version control</li>
+	</ul>
+	<li><font color=blue>Install Git</font></li>
+	<ul style="list-style-type:disc;">
+		<li>mac install</li>
+		<li>windows install
+			<dl>
+				<dt>installer location</dt>
+				<dd>- https://git-scm.com</dd>
+			</dl>
+		</li>
+		<li>linux install
+			<dl>
+				<dt>installer location</dt>
+				<dd>- https://git-scm.com/download/linux</dd>
+				<dd><table style="background-color:black;color:yellow;width:525px">
+					<tr><td>which git</td></tr>
+				</table></dd>
+				<dd>- where git is intalled</dd>
+			</dl>
+		</li>
+		<li>basic git configuration
+			<dl>
+				<dt>system</dt>
+				<dd>- default for everyone</dd>
+				<dd>- location: /etc/gitconfig</dd>
+				<dd><table style="background-color:black;color:yellow;width:525px">
+						<tr><td>git config --system</td></tr>
+				</table></dd>
+				<dt>user</dt>
+				<dd>- specific per user</dd>
+				<dd>- location: ~/.gitconfig</dd>
+				<dd><table style="background-color:black;color:yellow;width:525px">
+						<tr><td>git config --global</td></tr>
+				</table></dd>
+				<dt>project</dt>
+				<dd>- project specific configurations</dd>
+				<dd>- location: my_project/.git/config</dd>
+				<dd><table style="background-color:black;color:yellow;width:525px">
+						<tr><td>git config</td></tr>
+				</table></dd>
+				<dt>set config parameters</dt>
+				<dd><table style="background-color:black;color:yellow;width:525px">
+						<tr><td>git config --global user.name "curt weaver"</td></tr>
+						<tr><td>git config --global user.email "curt.weaver@gmail.com"</td></tr>
+						<tr><td>git config --global core.editor "C:\Program Files\Notepad++\notepad++.exe"</td></tr>
+						<tr><td>git config --global color.ui true</td></tr>
+					</table>
+				</dd>
+				<dt>view config</dt>
+				<dd><table style="background-color:black;color:yellow;width:525px">
+						<tr><td>git config user.name</td></tr>
+						<tr><td>cat ~/.gitconfig</td></tr>
+				</table></dd>
+			</dl>
+		</li>
+		<li>git auto completion</li>
+		<li>git help</li>
+	</ul>
+	<li><font color=blue>Getting Started</font></li>
+	<ul style="list-style-type:disc;">
+		<li>initialize a project
+			<dt><table style="background-color:black;color:yellow;width:525px">
+					<tr><td>mkdir my_project</td></tr>
+					<tr><td>cd my_project</td></tr>
+					<tr><td>git init</td></tr>
+				</table>
+			</dt>
+		<li>where git files are stored
+			<dl>
+				<dt>my_project/.git</dt>
+				<dd>- where changes are stored.</dd>
+				<dt>- changes are stored in the files in the .git directory.</dt>
+				<dt>- my_project/.git/config for config changes specific to the project.</dt>
+			</dl>
+		<li>first commit & write a commit message
+			<dl>
+				<dt>Make changes</dt>
+				<dt>Add the changes</dt>
+				<dt>Commit the changes with a message</dt>
+				<dt><table style="background-color:black;color:yellow;width:525px">
+					<tr><td>git add .</td></tr>
+					<tr><td>git commit -m "initial commit"</td></tr>
+					</table>
+				</dt>
+				<dt>short single-line summary (<50 chars)</dt>
+				<dd>Optionally followed by blank line and more comment description.</dd>
+				<dd>Keep each line to <72 chars.</dd>
+			</dl>
+		</li>
+		<li>View the Commit Log
+			<dl>
+				<dt><table style="background-color:black;color:yellow;width:525px">
+					<tr><td>git log</td></tr>
+					<tr><td>git log -n 5</td></tr>
+					<tr><td>git log --since=2019-01-01</td></tr>
+					<tr><td>git log --until=2019-01-01</td></tr>
+					<tr><td>git log --author="kevin"</td></tr>
+					<tr><td>git log --grep="init"</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+	<li><font color=blue>Git Concepts and Architecture</font></li>
+	<ul style="list-style-type:disc;">
+		<li>The Three Trees
+			<dl>
+				<dt>Repository, Staging Index, Working</dt>
+				<dd>- checkout Repo -> Working</dd>
+				<dd>- add Working -> Staging</dd>
+				<dd>- commit Staging -> Repo</dd>
+			</dl>
+		</li>
+		<li>Git workflows
+		</li>
+		<li>Hash values (SHA-1)
+			<dl>
+				<dt>git track changes with hash codes</dt>
+				<dd>- is a checksum of the change set</dd>
+				<dt>each change is a snapshot</dt>
+				<dd>- can be a single change or group of changes</dd>
+				<dt>checksum is unique to the changes in the check-in</dt>
+				<dd>- any change would change the checksum</dd>
+				<dt>checksum (SHA value) includes changes, parent SHA, author and message.</dt>
+				<dd>- changing any of these changes the SHA value.</dd>
+			</dl>
+		</li>
+		<li>The HEAD pointer
+			<dl>
+				<dt>always points to the tip of current branch</dt>
+				<dt><table style="background-color:black;color:yellow;width:525px">
+					<tr><td>ls -la .git</td></tr>
+					<tr><td>cat .git/HEAD</td></tr>
+					<tr><td>cat .git/refs/head/master</td></tr>
+					</table>
+				</dt>
+				<dd>- contents of .git/refs/head/master will be the SHA of the check-in for HEAD check-in.</dd>
+			</dl>
+		</li>
+	</ul>
+	<li><font color=blue>Make Changes to Files</font></li>
+	<ul style="list-style-type:disc;">
+		<li>Add files
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git add <i>filename</i> {<i>filename*</i>}</td><td>to add specific files</td></tr>
+					<tr><td style="background-color:black;color:yellow">git add .</td><td>to add all the files in a folder</td></tr>
+					<tr><td style="background-color:black;color:yellow">git commit -m "commit message."</td><td>to commit the changes</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Edit files
+			<dl>
+				<dt>after modify/edit file(s), same add/commit commands as for adding files.</dt>
+				<dd>- adding changes is called staging</dd>
+			</dl>
+		</li>
+		<li>View changes with diff
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git diff</td><td>diff changes between working and staging.</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>View only staged changes
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git diff --staged</td><td>diff changes staging and repo.</td></tr>
+					</table>
+				<dd>- --cached is the same as --stage</dd>
+			</dl>
+		</li>
+		<li>Delete files
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git rm <i>filename</i></td><td>the delete is staged</td></tr>
+					<tr><td style="background-color:black;color:yellow">git commit -m "commit message."</td><td>commit change to repo</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Move and rename files
+			<dl>
+				<dt>rename a file</dt>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">mv <i>filename1</i> <i>filename2</i></td><td>however you choose to rename a file</td></tr>
+					<tr><td style="background-color:black;color:yellow">git add <i>filename2</i></td><td></td></tr>
+					<tr><td style="background-color:black;color:yellow">git rm <i>filename1</i></td><td></td></tr>
+					<tr><td style="background-color:black;color:yellow">git commit -m "commit message."</td><td>commit change to repo</td></tr>
+					</table>
+				</dt>
+				<dt>move a file</dt>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git mv <i>filename1</i> <i>filename2</i></td><td>file in same location</td></tr>
+					<tr><td style="background-color:black;color:yellow">git mv <i>filename</i> <i>path/filename</i></td><td>file to a different folder</td></tr>
+					<tr><td style="background-color:black;color:yellow">git commit -m "commit message."</td><td>commit change to repo</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+	<li><font color=blue>Use Git with a Real Project</font></li>
+	<ul style="list-style-type:disc;">
+		<li>The Explore California website
+			<dl>
+				<dt>Downloaded <a href="https://files3.lynda.com/secure/courses/5030978/exercises/Ex_Files_Git_EssT.zip">Ex_Files_Git_EssT.zip</a></dt>
+				<dd>- saved in workspace</dd>
+				<dd>- added *.zip to .git/info/exclude</dd>
+				<dt>extracted Ex_Files_Git_EssT\Exercise Files\Chapter_06\06_01\explore_california</dt>
+			</dl>
+		</li>
+		<li>Initialze Git
+			<dl>
+				<dt>standard git init/add/commit on explore_california</dt>
+			</dl>
+		</li>
+		<li>View file edits
+			<dl>
+				<dt>options when viewing diffs</dt>
+				<dd>f  - move forward viewing changes</dd>
+				<dd>b  - move backward viewing changes</dd>
+				<dd>-S - toggel wrapping long lines</dd>
+				<dd>q  - quit</dd>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git diff --color-words <i>filename</i></td><td>only the diffs are highlighted.</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Stage and commit shortcut
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git commit -am "commit message"</td><td>commits all changes. skips staging.</td></tr>
+					<tr><td style="background-color:black;color:yellow">git commit --all -m "commit message"</td><td></td></tr>
+					<tr><td style="background-color:black;color:yellow">git log -n 1</td><td>view log of last commit</td></tr>
+					</table>
+				<dd>- be careful as you may have changes that you have forgotten about.</dd>
+				<dd>- does not commit untracked files, i.e. does not add new files.</dd>
+				</dt>
+			</dl>
+		</li>
+		<li>View a commit
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git show <i>SHA</i></td><td></td></tr>
+					<tr><td style="background-color:black;color:yellow">git show --color-words <i>SHA</i></td><td></td></tr>
+					</table>
+				<dd>- --color-words works with both diff and show</dd>
+					
+				</dt>
+			</dl>
+		</li>
+		<li>Compare commits
+			<dl>
+				<dt>too show the diff's between to commits that are not just the last commit.</dt>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git diff <i>SHA-old</i>..<i>SHA-later</i></td><td></td></tr>
+					<tr><td style="background-color:black;color:yellow">git diff <i>SHA-old</i>..HEAD</td><td></td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Multiline commit messages
+			<dl>
+				<dt>do a git commit with no -m option</dt>
+				<dd>- git will open the commit message in the default text editor. mdify, save and close.</dd>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git log --oneline</td><td>condensed version of the log</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Make atomic commits
+			<dl>
+				<dt>small commits</dt>
+				<dd>- make them small and affect only a single aspect</dd>
+				<dt>atmomic commits are a best practice</dt>
+			</dl>
+		</li>
+		<li>Challenge: Client edits
+			<dl>
+				<dt>customer requested changes</dt>
+				<dd><img src="./images/git-essential-training-basics-chap6-01.JPG" alt="Customer requested changes." style="width:394px;height:120px;"></dd>
+				<dt>made the changes</dt>
+				<dt>made three commits</dt>
+				<dd>one for big sur price change</dd>
+				<dd>one for california calm price change</dd>
+				<dd>one for explorers page text change. this was a multi line commit</dd>
+				</dt>
+			</dl>
+		</li>
+		<li>Solution: Client edits
+			<dl>
+				<dt>he did two commits</dt>
+				<dd>price changes were a single commit with multi-line comment</dd>
+				<dd>explorers page was single commit</dd>
+			</dl>
+		</li>
+	</ul>
+	<li><font color=blue>Undo Changes</font></li>
+	<ul style="list-style-type:disc;">
+		<li>In this section the gitbash cmd window in the tutorial showed a differnt command(s) to undo/revert changes in the varisous repos.</li>
+		<li>Undo working directory changes
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git restore <i>filename</i></td><td>command on my gitbash.</td></tr>
+					<tr><td style="background-color:black;color:yellow">git checkout -- <i>filename</i></td><td>command from tutorial.</td></tr>
+					<tr><td style="background-color:black;color:yellow">git restore .</td><td>to undo all files. * does not work.</td></tr>
+					</table>
+				<dd>- -- means from the current branch.</dd>
+				</dt>
+			</dl>
+		</li>
+		<li>Unstage files
+			<dl>
+				<dt>highlight</dt>
+				<dd>note</dd>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git restore --staged <i>filename</i></td><td>command on my gitbash.</td></tr>
+					<tr><td style="background-color:black;color:yellow">git reset HEAD <i>filename</i></td><td>command from tutorial.</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Amend commits
+			<dl>
+				<dt>Can only amend to the last commit.</dt>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git commit --amend -m <i>message</i></td></tr>
+					</table>
+				</dt>
+				<dd>- same command to amend actual changes and to change just the commit message.</dd>
+			</dl>
+		</li>
+		<li>Retrieve old versions
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git checkout <i>SHA</i> -- <i>filename</i></td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Revert a commit
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git revert <i>SHA</i></td><td>this open the commit message in the default editor.</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Remove untracked files
+			<dl>
+				<dt>To delete untracked files.</dt>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git clean <i>option</i></td><td>options: -i, -n, -f</td></tr>
+					</table>
+				<dd>- -i: interactive</dd>
+				<dd>- -n: dry run</dd>
+				<dd>- -f: run and delete the files</dd>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+	<li><font color=blue>Ignore Files</font></li>
+	<ul style="list-style-type:disc;">
+		<li>Use .gitignore files
+			<dl>
+				<dt>project/.gitignore</dt>
+				<dd>- list of rules to determine which files are ignored</dd>
+				<dd>- changes made to files in .gitignore will be ignored</dd>
+				<dt>contents of .gitignore</dt>
+				<dd>- file names</dd>
+				<dd>- *?[aeiou][0-9]</dd>
+				<dd><table border=1;style="width:525px">
+					<tr><td>*.txt</td><td>all .txt files</td></tr>
+					<tr><td>logs/*.txt</td><td>all .txt files in logs dir</td></tr>
+					<tr><td>*.php<br>!index.php</td><td>all .php files but not index.php</td></tr>
+					<tr><td>build/logs/</td><td>all files in build/logs dir</td></tr>
+					<tr><td>logs/*.log.[0-9]</td><td>*.log.[0-9] in logs dir</td></tr>
+					</table>
+				</dd>
+				<dd>- # for comments</dd>
+			</dl>
+		</li>
+		<li>Ideas on what to ignore<br>
+				(Template .gitignore files available at <a href="https://github.com/github/gitignore">https://github.com/github/gitignore</a>)<br>
+			<dl>
+				<dt>Compiled source code</dt>
+				<dd>- binaries</dd>
+				<dt>Packages and compressed files</dt>
+				<dt>Logs and databases</dt>
+				<dt>OS generated files</dt>
+				<dt>User-uploaded files</dt>
+				<dd>- images, PDF's, videos, etc.</dd>
+			</dl>
+		</li>
+		<li>Globally ignore files
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git config --global core.excludesfile ~/.gitignore_global</td><td>set excludes for all repo's and projects</td></tr>
+					</table>
+				</dt>
+				<dt>global ignore is user specific.</dt>
+				<dt>probably better to have it per project.</dt>
+			</dl>
+		</li>
+		<li>Ignore tracked files
+			<dl>
+				<dt>Add file(s) to .gitignore.</dt>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git rm --cached <i>filename</i></td><td>local copy exists but changes not tracked</td></tr>
+					</table>
+				</dt>
+				<dt>To track again just remove from the .gitignore.</dt>
+			</dl>
+		</li>
+		<li>Track empty directories
+			<dl>
+				<dt>create a .filename file in the empty directory.</dt>
+				<dd>- suggested filename is .gitkeep</dd>
+				<dt>add and commit the empty directory</dt>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git ls-tree head</td><td>list files being tracked</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+	<li><font color=blue>Conclusion</font></li>
+	<ul style="list-style-type:disc;">
+		<li>Next steps
+			<dl>
+				<dt>Completed: 4/21/2020</dt>
+				<dt>Next Course: <a href="./git-branch-merge-remote.html">Git: Branches, Merges, and Remotes</a></dt>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+<!--
+	<li><font color=blue>new topic</font></li>
+	<ul style="list-style-type:disc;">
+		<li>topic
+			<dl>
+				<dt>highlight</dt>
+				<dd>note</dd>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git command</td><td>description</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+-->
+
+</ol>
+<h2 ></h2>
+<p style="color:red"></p>
+<p title="I'm a tooltip"></p>
+<a href="./index.html">Back</a>
+</body>
+</html>
