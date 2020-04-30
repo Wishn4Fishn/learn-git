@@ -6,7 +6,7 @@
 <body style="background-color:#D3D3D3;">
 <h1 title="notes from LinkedIn training course by Kevin Skoglund.";style="font-size:60px;"><center>Git: Branches, Merges, and Remotes</center></h1>
 <ol type="1">
-	<li><font color=blue>Introduction</font></li>
+	<font color=blue>Introduction</font>
 	<ul style="list-style-type:disc;">
 		<li>Unlock powerful code management and collaboration tools in Git</li>
 		<li>What you should know</li>
@@ -26,65 +26,485 @@
 	<ul style="list-style-type:disc;">
 		<li>Reference commits
 			<dl>
-				<dt>highlight</dt>
-				<dd>note</dd>
+				<dt>Tree-ish</dt>
+				<dd>- a diresectory containing files or other directories.</dd>
+				<dt>Tree-ish examples</dt>
+				<dd>- SHA</dd>
+				<dd>- HEAD pointer reference, tip of the current branch</dd>
+				<dd>- Branch reference</dd>
+				<dd>- Tag reference</dd>
+				<dd>- Ancestry</dd>
+				<dt>HEAD pointer</dt>
+				<dd>- .git/HEAD</dd>
+				<dd>- .git/refs/heads/master</dd>
 				<dt><table style="width:525px">
-					<tr><td style="background-color:black;color:yellow">git command</td><td>description</td></tr>
+					<tr><td style="background-color:black;color:yellow">git show <i>SHA</i></td><td>show a commit</td></tr>
+					<tr><td style="background-color:black;color:yellow">git show HEAD</td><td>show head commit</td></tr>
 					</table>
 				</dt>
 			</dl>
 		</li>
 		<li>Ancestry
 			<dl>
-				<dt>highlight</dt>
-				<dd>note</dd>
+				<dt>SHA^,HEAD^, master^, HEAD~1, HEAD~</dt>
+				<dd>- parent of that revision</dd>
+				<dt>SHA^^,HEAD^^, master^^, HEAD~2</dt>
+				<dd>- grandparent of that revision</dd>
+				<dt>For beyond great-grandparent use ~ notation</dt>
+				<dd>- HEAD~3</dd>
+				<dd>- ^^^(^) works but ~ notation more practical.</dd>
 				<dt><table style="width:525px">
-					<tr><td style="background-color:black;color:yellow">git command</td><td>description</td></tr>
+					<tr><td style="background-color:black;color:yellow">git show HEAD^</td><td>shows the pareant of HEAD</td></tr>
 					</table>
 				</dt>
 			</dl>
 		</li>
 		<li>Tree listings
 			<dl>
-				<dt>highlight</dt>
-				<dd>note</dd>
 				<dt><table style="width:525px">
-					<tr><td style="background-color:black;color:yellow">git command</td><td>description</td></tr>
+					<tr><td style="background-color:black;color:yellow">git ls-tree <i>tree-ish</i></td><td>git version of ls -la</td></tr>
+					<tr><td style="background-color:black;color:yellow">git ls-tree <i>tree-ish</i> <i>filename/dir</i></td><td>info on a specific resource</td></tr>
+					<tr><td style="background-color:#D3D3D3;color:blue">Examples:</td></tr>
+					<tr><td style="background-color:black;color:yellow">git ls-tree HEAD</td></tr>
+					<tr><td style="background-color:black;color:yellow">git ls-tree HEAD^^</td></tr>
+					<tr><td style="background-color:black;color:yellow">git ls-tree d1c19c5251 assets\</td></tr>
 					</table>
 				</dt>
 			</dl>
 		</li>
 		<li>Filter the commit log
 			<dl>
-				<dt>highlight</dt>
-				<dd>note</dd>
+				<dt><a href="https://www.git-scm.com/docs/git-log">Git log help</a></dt>
 				<dt><table style="width:525px">
-					<tr><td style="background-color:black;color:yellow">git command</td><td>description</td></tr>
+					<tr><td style="background-color:#D3D3D3;color:blue">Examples</tr>
+					<tr><td style="background-color:black;color:yellow">git log -3</td></tr>
+					<tr><td style="background-color:black;color:yellow">git log --since=2019-04-14</td></tr>
+					<tr><td style="background-color:black;color:yellow">git log --after=2.weeks --before=3.days</td></tr>
+					<tr><td style="background-color:black;color:yellow">git log --until="3 days ago"</td></tr>
+					<tr><td style="background-color:black;color:yellow">git log --author=kevin</td></tr>
+					<tr><td style="background-color:black;color:yellow">git log --grep="initial"</td></tr>
+					<tr><td style="background-color:black;color:yellow">git log <i>SHA</i>...HEAD</td></tr>
+					<tr><td style="background-color:black;color:yellow">git log <i>filename</i></td></tr>	
 					</table>
 				</dt>
 			</dl>
 		</li>
 		<li>Format the commit log
 			<dl>
+				<dt><table style="width:600px">
+					<tr><td style="background-color:black;color:yellow">git log -p</td><td>changeset along with the commit message</td></tr>
+					<tr><td style="background-color:black;color:yellow">git log --stat</td><td>commit message aswell as statistics</td></tr>
+					<tr><td style="background-color:black;color:yellow">git log --format=<i>format</i></td><td>default is medium.</td></tr>
+					<tr><td style="background-color:black;color:yellow">git log --oneline</td><td>format=oneline minus the SHA</td></tr>
+					<tr><td style="background-color:black;color:yellow">git log --graph</td><td>more useful when there are branches</td></tr>
+					<tr><td style="background-color:black;color:yellow">git log --graph --all --oneline --decorate</td><td></td></tr>
+					</table>
+				</dt>
+				<dd>- format options: oneline, short, medium, full, fuller, email, raw</dd>
+			</dl>
+		</li>
+	</ul>
+	<li><font color=blue>Branching</font></li>
+	<ul style="list-style-type:disc;">
+		<li>Branching overview
+			<dl>
+				<dt>Branches are cheap</dt>
+				<dd>- try new ideas. don't work out, then throw out the branch</dd>
+				<dd>- isolate or sections of work</dd>
+				<dt>One working branch</dt>
+				<dt>Fast context switching</dt>
+			</dl>
+		</li>
+		<li>Create branches
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git branch</td><td>shows the branches</td></tr>
+					<tr><td style="background-color:black;color:yellow">git branch <i>new-branch-name</i></td><td>create a new branch</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Switch branches
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git checkout <i>new-branch-name</i></td><td>switch to new branch</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Create and switch branches
+			<dl>
+				<dt>create new branch and switch to it.</dt>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git checkout -b <i>new-branch--name</i></td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Switch branches with uncommited changes
+			<dl>
+				<dt>can't switch branches with uncommited changes</dt>
+				<dt>three choices on what to do</dt>
+				<dd>- commit the changes</dd>
+				<dd>- revert the changes</dd>
+				<dd>- stash changes (to be covered later)</dd>
+			</dl>
+		</li>
+		<li>Compare branches
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git diff <i>branch1</i>..<i>branch2</i></td><td>description</td></tr>
+					<tr><td style="background-color:black;color:yellow">git branch --merged</i></td><td>show all changes merged into current branch</td></tr>
+					<tr><td style="background-color:black;color:yellow">git branch --no-merged</i></td><td>show all changes not merged into current branch</td></tr>
+					</table>
+				</dt>
+				<dd>- all options for diff available when comparing branches</dd>
+			</dl>
+		</li>
+		<li>Rename branches
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git branch -m [<i>oldbranch</i>] <i>newbranch</i></td></tr>
+					</table>
+				</dt>
+				<dd>- if oldbranch omitted assumes current branch</dd>
+				<dt>Avoid renaming branches if sharing code.</dt>
+			</dl>
+		</li>
+		<li>Delete branches
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git branch -d <i>branch-to-delete</i></td></tr>
+					<tr><td style="background-color:black;color:yellow">git branch -D <i>branch-to-delete</i></td></tr>
+					</table>
+				</dt>
+				<dd>- -D forces the delete even if there are changes</dd>
+			</dl>
+		</li>
+		<li>Configure command prompt
+			<dl>
+				<dt>this is pre-configured with the windows gitbash</dt>
+				<dt>add git prompt</dt>
+				<dd>- https://github.com/git/git</dd>
+				<dt>contrib/completion/git-prompt.sh</dt>
+				<dt>save file locally</dt>
+				<dt>mv file to .git-prompt.bash</dt>
+				<dt>edit .bash_profile </dt>
+				<dd><img src="./images/git-branch-merge-remote-01.JPG" alt="Customer requested changes." style="width:394px;height:120px;"></dd>
+			</dl>
+		</li>
+	</ul>
+	<li><font color=blue>Reset Branches</font></li>
+	<ul style="list-style-type:disc;">
+		<li>Reset types
+			<dl>
+				<dt>changes branch to the state at a specified commit</dt>
+				<dt>moves the HEAD to a specific commit.</dt>
+				<dt>three types of resets</dt>
+				<dd>- soft</dd>
+				<dd>- mixed (default)</dd>
+				<dd>- hard</dd>
+			</dl>
+		</li>
+		<dl>
+			<dt><b>General Reset Note:</b></dt>
+			<dd>- When moving the HEAD pointer around. Remember where you started. i.e. save the SHA someplace.</dd>
+			<dd>- Most of the time you only want to do a reset when working with your own private repo and you haven't pushed any changes to a remote repo or shared with any colaborators.</dd>
+			<dd>- Abandoned changes are available for a little while but git will eventually clean them up.</dd>
+		</dl>
+		<li>Soft reset
+			<dl>
+				<dt>Moves the HEAD pointer</dt>
+				<dt>Does not change the staging index</dt>
+				<dt>Does not change the working directory</dt>
+				<dd><table style="width:240px">
+					<tr><td style="background-color:black;color:yellow">git reset --soft <i><b><font color=ghostwhite>tree-ish</font></b></i</td></tr>
+					</table>
+				</dd>
+				<dt>Return to an old state and leave changes staged</dt>
+				<dt>Useful for amending one or more commits</dt>
+				<dt>Similar to <i>git commit --amend</i></dt>
+				<dt><b>Previous commits will be discarded.</b></dt>
+			</dl>
+		</li>
+		<li>Mixed reset
+			<dl>
+				<dt>Moves the HEAD pointer</dt>
+				<dt>Changes the staging index to match the repository</dt>
+				<dt>Does not change the working directory</dt>
+				<dd><table style="width:240px">
+					<tr><td style="background-color:black;color:yellow">git reset --mixed <i><b><font color=ghostwhite>tree-ish</font></b></i></td></tr>
+					<tr><td style="background-color:black;color:yellow">git reset <i><b><font color=ghostwhite>tree-ish</font></b></i></td></tr>
+					</table>
+				</dd>
+			</dl>
+		</li>
+		<li>Hard reset
+			<dl>
+				<dt>Moves the HEAD pointer</dt>
+				<dt>Changes the staging index to match the repository</dt>
+				<dt>Changes the working directory to match the repository</dt>
+				<dd><table style="width:240px">
+					<tr><td style="background-color:black;color:yellow">git reset --hard <i><b><font color=ghostwhite>tree-ish</font></b></i></td></tr>
+					</table>
+				</dd>
+			</dl>
+		</li>
+	</ul>
+	<li><font color=blue>Merge Branches</font></li>
+	<ul style="list-style-type:disc;">
+		<li>Merge code
+			<dl>
+				<dt>Best Practices</dt>
+				<dd>-  checkout the receiving branch before starting</dd>
+				<dd>-  start with a clean working directory (commit or stash changes)</dd>
+				<dt>Happy path, best case scenario, basic merge</dt>
+				<dd><table style="width:245px">
+					<tr><td style="background-color:black;color:yellow">git merge <i><b><font color=ghostwhite>source_branch</font></b></i></td></tr>
+					</table>
+				</dd>
+			</dl>
+		</li>
+		<li>Fast-forawrd merge vs. real merge
+			<dl>
+				<dt>Fast forward merge.</dt>
+				<dd>source branch is a in-line change of the destination brach so no merging necessary. just move the HEAD pointer.</dd>
+				<dt>Real merge.</dt>
+				<dd>destination branch contains changes not in the source branch.</dd>
+			</dl>
+		</li>
+		<li>Merge conflicts/Resolving merge conflicts
+			<dl>
+				<dt>Same line in the same file has been changed.</dt>
+				<dt>Three choices when there is a conflict</dt>
+				<dd>- abort</dd>
+				<dd><table style="width:280px">
+					<tr><td style="background-color:black;color:yellow">git merge --abort</td></tr>
+					</table>
+				</dd>
+				<dd>- merge manaully</dd>
+				<dd><table style="width:280px">
+					<tr><td style="background-color:black;color:yellow">git diff --color-words <i><b><font color=ghostwhite>destn_branch</font></b></i>..<i><b><font color=ghostwhite>source_branch</font></b></i></td></tr>
+					<tr><td style="background-color:black;color:yellow">git show --color-words</td></tr>
+					<tr><td style="background-color:#D3D3D3;color:blue">Modify file(s) and remove git merge tags.</td></tr>
+					<tr><td style="background-color:black;color:yellow">git add <i><b><font color=ghostwhite>filename(s)</font></b></i></td></tr>
+					<tr><td style="background-color:black;color:yellow">git commit</td></tr>
+					</table>
+				</dd>
+				<dd>- use a merge tool</dd>
+				<dd><table style="width:608px">
+					<tr><td style="background-color:black;color:yellow">git mergetool --tool=<i><b><font color=ghostwhite>mergtool</font></b></i></td></tr>
+					<tr><td style="background-color:black;color:yellow">git help mergetool</td><td>for built in merge tools</td></tr>
+					<tr><td style="background-color:black;color:yellow">git mergetool</td><td>to use default tool in your .gitconfig</td></tr>
+					</table>
+				</dd>
+			</dl>
+		</li>
+		<li>Strateggies to reduce conflicts
+			<dl>
+				<dt>Keep lines short</dt>
+				<dt>Keep commits small and focused (atomic)</dt>
+				<dt>Beware of stray edits to whitespace (space, tabs, line returns)</dt>
+				<dd>- if colaborating try to get everyone to agree.</dd>
+				<dt>Merge often</dt>
+				<dt>Track changes to master.</dt>
+			</dl>
+		</li>
+	</ul>
+	<li><font color=blue>Stash Changes</font></li>
+	<ul style="list-style-type:disc;">
+		<li>Working with the stash
+			<dl>
+				<dt>stash is a place to store changes that are not in the repo, staging or workspace</dt>
+				<dt>by default stash does not store changes to untracked files</dt>
+				<dd>- there is an -u|--include-untracked if you want to stash untracked files</dd>
+				<dt>changes in stash are independant of the branch</dt>
+				<dt><table style="width:600px">
+					<tr><td style="background-color:black;color:yellow">git stash save "<i><b><font color=ghostwhite>description</font></b></i>"</td><td>to stash changes</td></tr>
+					<tr><td style="background-color:black;color:yellow">git stash list</td><td>see what is stashed</td></tr>
+					<tr><td style="background-color:black;color:yellow">git stash show <i><b><font color=ghostwhite>identifier</font></b></i></td><td>view diff stat</td></tr>
+					<tr><td style="background-color:black;color:yellow">git stash show -p <i><b><font color=ghostwhite>identifier</font></b></i></td><td>view changes</td></tr>
+					<tr><td style="background-color:black;color:yellow">git stash pop</td><td>retrieve the last thing stashed and deletes from stash</td></tr>
+					<tr><td style="background-color:black;color:yellow">git stash pop <i><b><font color=ghostwhite>identifier</font></b></i></td><td>retrieve a specific stash item and deletes from stash</td></tr>
+					<tr><td style="background-color:black;color:yellow">git stash apply</td><td>retrieve the last thing stashed and does NOT delete from stash</td></tr>
+					<tr><td style="background-color:black;color:yellow">git stash apply <i><b><font color=ghostwhite>identifier</font></b></i></td><td>retrieve the last thing stashed and does NOT delete from stash</td></tr>
+					<tr><td style="background-color:black;color:yellow">git stash drop <i><b><font color=ghostwhite>identifier</font></b></i></td><td>deletes specific iterm from stash</td></tr>
+					<tr><td style="background-color:black;color:yellow">git stash clear</td><td>deletes/clears everything from stash</td></tr>
+					</table>
+				</dt>
+				<dd>- there can be conflicts when retrieving from stash. works just like a conflict when doing a merge.</dd>
+			</dl>
+		</li>
+	</ul>
+	<li><font color=blue>Set Up a Remote</font></li>
+	<ul style="list-style-type:disc;">
+		<li>Local and remote repositories
+			<dl>
+				<dt>Git is designed to be distributed version control</dt>
+				<dt>Remote repositories (remotes) hosted on a server on a network</dt>
+				<dt>allow easy collaboration</dt>
+				<dt>push local changes to remote</dt>
+				<dt>fetch changes from remote</dt>
+				<dt>merge to get fetched changes into local banch</dt>
+				<dt>general process</dt>
+				<dd>- make local changes</dd>
+				<dd>- fetch from remote</dd>
+				<dd>- merge fetched changes</dd>
+				<dd>- push merged local changes to remote</dd>
+			</dl>
+		</li>
+		<li>Setup a GitHub account
+			<dl>
+				<dt><a href="https://github.com/Wishn4Fishn">Wishn4Fishn</a></dt>
+				<dt><img src="./images/git-branch-merge-remote-02.JPG" alt="Customer requested changes." style="width:637px;height:362px;"></dt>
+			</dl>
+		</li>
+		<li>Add a remote repository
+			<dl>
 				<dt>highlight</dt>
 				<dd>note</dd>
 				<dt><table style="width:525px">
-					<tr><td style="background-color:black;color:yellow">git command</td><td>description</td></tr>
+					<tr><td style="background-color:black;color:yellow">git remote</td></tr>
+					<tr><td style="background-color:black;color:yellow">git remote add origin https://github.com/Wishn4Fishn/<i><b><font color=ghostwhite>repo-name</font></b></i>.git</td></tr>
+					<tr><td style="background-color:black;color:yellow">git remote -v</td></tr>
+					<tr><td style="background-color:black;color:yellow">git remote rm origin</td></tr>
+					</table>
+				</dt>
+				<dd>- remote with no parameters list the remotes</dd>
+				<dd>- -v for more details on the remotes</dd>
+				<dd>- entry added to <i>.git/config</i></dd>
+			</dl>
+		</li>
+		<li>Create a remote branch
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git push -u origin master</td><td>push master to origin</td></tr>
+					<tr><td style="background-color:black;color:yellow">git branch -r</td><td>list remote branches</td></tr>
+					<tr><td style="background-color:black;color:yellow">git branch -a</td><td>list all branches</td></tr>
+					<tr><td style="background-color:black;color:yellow">cat .git/refs/remotes/origin/master</td><td>SHA of origin/master</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Clone a remote repository
+			<dl>
+				<dt>Copy clone path from GitHub.</dt>
+				<dd><img src="./images/git-branch-merge-remote-03.JPG" alt="Path location in GitHub."></dd>
+				<dt><br></dt>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git clone <i><b><font color=ghostwhite>clone-path</font></b></i> <i><b><font color=ghostwhite>identifier</font></b></i></td></tr>
+					</table>
+				</dt>
+				<dd>- indentifer can be blank. if so, repo will have the same name as in GitHub.</dd>
+				
+			</dl>
+		</li>
+		<li>Track remote branches
+			<dl>
+				<dt>When you push with -u or clone a repository, Git automatically tracks the remote repo.</dt>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git branch -u <i><b><font color=ghostwhite>upstream</font></b></i> <i><b><font color=ghostwhite>branchname</font></b></i></td></tr>
+					<tr><td style="background-color:black;color:yellow">git branch --unset-upstream <i><b><font color=ghostwhite>branchname</font></b></i></td></tr>
 					</table>
 				</dt>
 			</dl>
 		</li>
 	</ul>
-	<li><font color=blue>new topic</font></li>
+	<li><font color=blue>Collaborate with a Remote</font></li>
 	<ul style="list-style-type:disc;">
-		<li>topic
+		<li>Push changes to a remote repository
 			<dl>
-				<dt>highlight</dt>
-				<dd>note</dd>
-				<dt><table style="width:525px">
-					<tr><td style="background-color:black;color:yellow">git command</td><td>description</td></tr>
+				<dt><table style="width:600px">
+					<tr><td>Make a change to a tracked file and commit.</td><td></td></tr>
+					<tr><td style="background-color:black;color:yellow">git log --oneline -5</td><td>see change to master but not origin/master</td></tr>
+					<tr><td style="background-color:black;color:yellow">git log --oneline -5 origin/master</td><td>confirm that change is not in origin/master</td></tr>
+					<tr><td style="background-color:black;color:yellow">git diff --color-words origin/master..master</td><td>see the changes</td></tr>
+					<tr><td style="background-color:black;color:yellow">git push</td><td>push the changes to the remote repo.</td></tr>				
 					</table>
 				</dt>
+				<dd>- origin/master is not actual branch but a local tracking branch of the remote branch.</dd>
+				<dd>- because origin is a tracking branch, git automatically knows to get the changes from master and push them to origin. otherwise you would need to specify destination and source branches.</dd>
+			</dl>
+		</li>
+		<li>Fetch changes from a remote repository
+			<dl>
+				<dt><b>fetch</b> gets the changes from the remote repo and brings them down to the local tracking brach.</dt>
+				<dd>- syntax: <font style="background-color:black;color:yellow">git fetch <i><b><font color=ghostwhite>origin</font></b></i></font></dd>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git fetch</td><td>origin can be dropped since it is being tracked</td></tr>
+					</table>
+				</dt>
+				<dt>fetch does not make changes to your local files. it just gets the changes that have been made to the remote.</dt>
+				<dt>when to fetch</dt>
+				<dd>- each day before you start working</dd>
+				<dd>- before you push</dd>
+				<dd>- before you go offline</dd>
+				<dd>- <u>often</u>, it doesn't hurt anything and keeps you up-to-date.</dd>
+			</dl>
+		</li>
+		<li>Merge in fetched changes
+			<dl>
+				<dt><table style="width:600px">
+					<tr><td style="background-color:black;color:yellow">git diff --color-words master..origin/master</td><td>view the diffs</td></tr>
+					<tr><td style="background-color:black;color:yellow">git fetch</td><td>confirm no changes</td></tr>
+					<tr><td style="background-color:black;color:yellow">git merge origin/master</td><td>hopefully just a simple fast forward merge</td></tr>
+					<tr><td style="background-color:black;color:yellow">git pull</td><td>does fetch and merge in one-step</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Check out remote branches
+			<dl>
+				<dt>can not checkout a remote branch. need to create a new brach that tracks it.</dt>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git branch non_tracking origin/non_tracking</td><td>description</td></tr>
+					<tr><td style="background-color:black;color:yellow">git checkout -b non_tracking origin/non_tracking</td><td>description</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Push to an updated remote branch
+			<dl>
+				<dt>if you try to push and git rejects it you need to fetch, merge and then push again.</dt>
+			</dl>
+		</li>
+		<li>Delete a remote branch
+			<dl>
+				<dt>How to remove a branch from the remote repository</dt>
+				<dd>- most useful when a feature branch is complete and merged</dd>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git push origin :non_tracking</td><td>old school method</td></tr>
+					<tr><td style="background-color:black;color:yellow">git push origin --delete non_tracking</td><td>new clearer method</td></tr>
+					</table>
+				</dt>
+				<dd>- the colon in front off the name tells git to delete the branch</dd>
+				<dd>- <font style="background-color:black;color:yellow">git push -u <i><b><font color=ghostwhite>origin non_tracking</font></b></i></font> is actually doing<br>
+				<font style="background-color:black;color:yellow">git push -u <i><b><font color=ghostwhite>origin non_tracking:non_tracking</font></b></i></font> that is why :non_tracking deletes.</dd> 
+			</dl>
+		</li>
+		<li>Enable collaboration
+			<dl>
+				<dt>Add collaborators ro you projects</dt>
+				<dd>- goto GitHub and click on Settings in upper right corner</dd>
+				<dd><img src="./images/git-branch-merge-remote-chap7-01.JPG" alt="Settings"></dd>
+				<dd>- click on Manage Access in left hand column</dd>
+				<dd><img src="./images/git-branch-merge-remote-chap7-02.JPG" alt="Manage Access"></dd>
+				<dd>- click on Invite a collaborator button</dd>
+				<dd><img src="./images/git-branch-merge-remote-chap7-03.JPG" alt="Invite a collaborator"></dd>
+				<dd>- Enter e-mail or username of who you want to invite.</dd>
+				<dt></dt>
+				<dt>Join other projects</dt>
+				<dd>- Need to create a fork, work in the fork, submit pull request and then merge to master when pull request is approved.</dd>
+			</dl>
+		</li>
+		<li>Collaboration workflow
+			<dl>
+				<dt>Sample workflow for submitter, initial feature dev</dt>
+				<dd><img src="./images/git-branch-merge-remote-chap8-01.JPG" alt="Sample workflow for submitter,initial"></dd>
+				<dt>Sample workflow for collaborator with a modification</dt>
+				<dd><img src="./images/git-branch-merge-remote-chap8-02.JPG" alt="Sample workflow for collaborator"></dd>
+				<dt>Sample workflow for submitter, review and push to master</dt>
+				<dd><img src="./images/git-branch-merge-remote-chap8-01.JPG" alt="Sample workflow for submitter,final"></dd>
 			</dl>
 		</li>
 	</ul>
@@ -92,13 +512,33 @@
 	<ul style="list-style-type:disc;">
 		<li>Next steps
 			<dl>
-				<dt>Completed: ---</dt>
-				<dt>Next Course: ---</dt>
+				<dt>Add an alias to github</dt>
+				<dd><img src="./images/git-branch-merge-remote-chap9-01.JPG" alt="add an alias"></dd>
+				<dt>Useful alias's</dt>
+				<dd><img src="./images/git-branch-merge-remote-chap9-02.JPG" alt="add an alias"></dd>
+				<dt>Setup ssh keys</dt>
+				<dd>- see GitHub help</d>
+				<dt>Completed: 4/28/20</dt>
+				<dt>Next Course: <a href="./git-intermediate-techniques.html">Git Intermediate Techniques</a></dt>
 				</dt>
 			</dl>
 		</li>
 	</ul>
 <!--
+	<li><font color=blue>new topic</font></li>
+	<ul style="list-style-type:disc;">
+		<li>topic
+			<dl>  
+				<dt>highlight</dt>
+				<dd>note</dd>
+				<dt><table style="width:525px">
+					<tr><td style="background-color:black;color:yellow">git command</td><td>description</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+
 	<li><font color=blue>new topic</font></li>
 	<ul style="list-style-type:disc;">
 		<li>topic
