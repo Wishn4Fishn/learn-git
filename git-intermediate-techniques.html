@@ -1,0 +1,622 @@
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Git Intermediate Techniques</title>
+<style>
+	font.code {
+		font-family: Courier New, Courier, monospace;
+		background-color:lightgrey;
+		color:black;
+	}
+	td.codecel {
+		font-family: Courier New, Courier, monospace;
+		background-color:lightgrey;
+		color:black;
+	}
+	td.textcel {
+		font-family: "Times New Roman", Times, serif;
+		background-color:powderblue;
+		color:blue;
+	}
+	li.topic {
+		color:blue;
+	}
+	ul.disc {
+		list-style-type:disc;
+	}
+	<!-- space: &nbsp; -->
+</style>
+</head>
+<body style="background-color:powderblue">
+<h1 style="color:blue;font-size:60px;font-family:courier;" title="notes from LinkedIn training course by Kevin Skoglund.">
+	<center>Git Intermediate Techniques</center>
+</h1>
+<ol type="1">
+	<font color=blue>Introduction</font>
+	<ul class="disc">
+		<li>Welcome</li>
+			<dl>
+				<dt>Manage and delete branches</dt>
+				<dt>Tags</dt>
+				<dt>Interactive staging</dt>
+				<dd>- stage just portions of a change without staging the entire file.</dd>
+				<dt>Cherry pick commits between branches</dt>
+				<dt>Share code between collaborators without needing a remote repository</dt>
+				<dt>Rebase</dt>
+				<dd>- used to relocate commits</dd>
+				<dd>- differences between rebase and merge</dd>
+				<dd>Use rebase interactive mode and its squash feature</dd>
+				<dt>Use log, blame and bisect to track down problems in a project</dt>
+			</dl>
+		<li>How to use the excercise files</li>
+			<dl>
+				<dt>Downloaded <a href="https://files3.lynda.com/secure/courses/664821/exercises/Ex_Files_Git_Intermediate_Techniques.zip">Ex_Files_Git_Intermediate_Techniques.zip</a></dt>
+				<dd>- need to be signed in to LinkedIn via SuccessFactor.</dd>
+				<dd>- saved in workspace</dd>
+				<dd>- extracted Ex_Files_Git_Intermediate_Techniques\Exercise Files\Chapter_01\01_01\demo_repo</dd>
+				<dt>setup remote repo</dt>
+				<dd><table style="width:650px">
+					<tr><td class="codecel">cd demo_repo</td></tr>
+					<tr><td class="codecel">rm -r .git</td></tr>
+					<tr><td class="codecel">vi README.md</td></tr>
+					<tr><td class="codecel">git init</td></tr>
+					<tr><td class="codecel">git add .</td></tr>
+					<tr><td class="codecel">git commit</td></tr>
+					<tr><td class="codecel">git remote add origin https://github.com/Wishn4Fishn/demo_repo.git</td></tr>
+					<tr><td class="codecel">git push -u origin master</td></tr>
+					</table>
+				</dd>
+				<dd>- had to manually create the repo in GitHub UI for push to work.</dd>
+				<dt>setup global alias's</dt>
+				<dd><table style="width:650px">
+					<tr><td class="codecel">st = status</td><td class="codecel">co = checkout</td></tr>
+					<tr><td class="codecel">ci = commit</td><td class="codecel">br = branch</td></tr>
+					<tr><td class="codecel">df = diff</td><td class="codecel">dfs = diff --staged</td></tr>
+					<tr><td class="codecel">logg = log --graph --decorate --oneline --all</td><td class="codecel">log1 = log --oneline</td></tr>
+					</table>
+				</dd>
+			</dl>
+		</li>
+	</ul>
+	<li class="topic">Branch Management</li>
+	<ul class="disc">
+		<li>Force push to a remote
+			<dl>
+				<dt><table style="width:350px">
+					<tr><td class="codecel">git push -f</td></tr>
+					<tr><td class="codecel">git push --force</td></tr>
+					</table>
+				</dt>
+				<dt>reasons for a force push</dt>
+				<dd>- local version is better than remote</dd>
+				<dd>- remote version is wrong and needs repair</dd>
+				<dd>- versions have diverged and merging is undesirable</dd>
+				<dt><b><font color="red">Use with extreme caution.</font></b></dt>
+				<dd>- disruptive to other using the remote branch.</dd>
+				<dd>- can anger the dev team.</dd>
+				<dd>- commits disappear.</dd>
+				<dd>- subsequent commits can be orphaned.</dd>
+				<dt>after a forced push, a hard reset should be done</dt>
+				<dd><table style="width:320px">
+					<tr><td class="codecel">git reset --hard origin/master</td></tr>
+					</table>
+				</dd>
+			</dl>
+		</li>
+		<li>Identify merged branches
+			<dl>
+				<dt>description</dt>
+				<dd>- note</dd>
+				<dt><table style="width:525px">
+					<tr><td class="codecel">git branch --merged</td></tr>
+					<tr><td class="codecel">git branch --no-merged</td></tr>
+					<tr><td class="codecel">git branch -r --merged</td></tr>
+					</table>
+				</dt>
+				<dd>- --no-merged shows branches that have not been merged.<dd>
+			</dl>
+		</li>
+		<li>Delete local and remote branches
+			<dl>
+				<dt>Must be on a different branch from the one you are deleting.</dt>
+				<dt><table style="width:525px">
+					<tr><td class="codecel">git branch -d <i>branch-name</i></td><td></td></tr>
+					<tr><td class="codecel">git branch -D <i>branch-name</i></td><td>-D if a force delete</td></tr>
+					<tr><td class="codecel">git push origin :<i>branch-name</i></td><td>original git remote delete</td><td></td></tr>
+					<tr><td class="codecel">git push --delete origin <i>branch-name</i></td><td>added git v1.7</td><td></td></tr>
+					<tr><td class="codecel">git push -d origin <i>branch-name</i></td><td>added git v2.8</td><td></td></tr>
+					</table>
+				</dt>
+				<dd>- branch to be deleted must be fully merged into the current branch.</dd>
+			</dl>
+		</li>
+		<li>Prune stale branches
+			<dl>
+				<dt>Stale Branch</dt>
+				<dd>- a remote-tracking bracnh that no longer tracks anything because the actual bracnh in the remote repository has been deleted.</dd>
+				<dt>Delete all stale remote tracking branches</dt>
+				<dd>- remote tracking branches are not the same as remote branches.</dd>
+				<dt>Three versions of a branch:</dt>
+				<dd>- branch on the remote repo (<font style="font-family:'Courier New'">git push -d origin <i>branch-name</i>)</font></dd>
+				<dd>- local snapshot of the remote branch</dd>
+				<dd>- local branch tracking the remote branch (<font style="font-family:'Courier New'">git branch -d <i>branch-name</i></font>)</dd>
+				<dt>Deleting the remote prunes the remote-tracking bracnh automatically.</dt>
+				<dt>Need to delete the local sanpshot when a collaborator deletes a remote branch.</dt>
+				<dt>Fetching does not automatically prune.</dt>
+				<dt><table style="width:525px">
+					<tr><td class="codecel">git remote prune origin</td></tr>
+					<tr><td class="codecel">git remote prune origin --dry-run</td></tr>
+					<tr><td class="codecel">git fetch --prune</td></tr>
+					<tr><td class="codecel">git fetch -p</td></tr>
+					</table>
+				</dt>
+				<dt>Global config setting to always prune when fetching.</dt>
+				<dd><img src="./images/git-intermediate-techniques-prune-01.jpg" alt="git config --global fetch.prune true."></dd>
+				<dt>&nbsp;</dt>
+				<dt><img src="./images/git-intermediate-techniques-prune-02.jpg" alt="do not use git prune"></dt>
+			</dl>
+		</li>
+	</ul>
+	<li class="topic">Tagging</li>
+	<ul class="disc">
+		<li>Create tags
+			<dl>
+				<dt>mark important points in history</dt>
+				<dt>named reference to a commit</dt>
+				<dt>makes it easy to find</dt>
+				<dt>typically marks releases</dt>
+				<dd>- v1.0, v1.1, v2.0, etc.</dd>
+				<dt>mark key features</dt>
+				<dt>marks points for further team discussions</dt>
+				<dt>two types of tags</dt>
+				<dd>- lightweight tag</dd>
+				<dd>&nbsp;&nbsp;<font class="code">git tag <i><b>tagname</b> <b>SHA</b></i></font></dd>
+				<dd>- annotated tag (most common)</dd>
+				<dd>&nbsp;&nbsp;<font class="code">git tag -a <i><b>tagname</b></i> -m "<i><b>message</b></i>" <i><b>SHA</b></i></font></dd>
+				<dt>if you ommit the SHA, git assume the HEAD of the current branch.</dt>
+				<dt>-a and -m can be combined</dt>
+				<dd>- <font class="code">git tag -am "<i><b>message</b></i>" <i><b>tagname</b></i> <i><b>SHA</b></i></font></dd>
+			</dl>
+		</li>
+		<li>List tags
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td class="codecel">git tag</td><td>shows the tags</td></tr>
+					<tr><td class="codecel">git tag --list</td><td>better method</td></tr>
+					<tr><td class="codecel">git tag -l</td><td>shorthand</td></tr>
+					<tr><td class="codecel">git tag -l "v2*"</td><td>to filter the list, -l or --list is required</td></tr>
+					<tr><td class="codecel">git tag -l -n</td><td>list tags and first line thier annotations</td></tr>
+					<tr><td class="codecel">git tag -l -n <i>a_num</i></td><td>list tags & a_num lines of thier annotations</td></tr>
+					<tr><td class="codecel">git tag -ln</td><td>list tags and first line thier annotations</td></tr>
+					</table>
+				</dt>
+				<dt>can work with tags like SHAs</dt>
+				<dd>- <font class="code">git show v1.1</font></dd>
+				<dd>- <font class="code">git diff v1.0..v1.1</font></dd>
+			</dl>
+		</li>
+		<li>Delete tags
+			<dl>
+				<dt><table style="width:525px">
+					<tr><td class="codecel">git tag --delete</td></tr>
+					<tr><td class="codecel">git tag -d</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Push tags to a remote
+			<dl>
+				<dt>like branches tags are local unless shared to the remote</dt>
+				<dt><font class="code">git push</font> does not transfer tags</dt>
+				<dt>tags must be explicetly transferred</dt>
+				<dt><font class="code">git fetch</font> automatically retrieves shared tags</dt>
+				<dt><table style="width:575px">
+					<tr><td class="codecel">git push origin <i>tag</i></td><td>push a single tag</td></tr>
+					<tr><td class="codecel">git push origin --tags</td><td>push all tags</td></tr>
+					<tr><td class="codecel">git fetch --tags</td><td>gets just the tags & the commits for thos tags</td></tr>
+					<tr><td class="codecel">git push origin :<i>tag</i></td><td>to delete a tag</td></tr>
+					<tr><td class="codecel">git push --delete origin <i>tag</i></td><td></td></tr>
+					<tr><td class="codecel">git push -d origin <i>tag</i></td><td></td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Check out tags
+			<dl>
+				<dt>tags are not the same as branches</dt>
+				<dt>tags can be checked out just like a commit</dt>
+				<dt>right way is checkout a tag is to create a branch from it</dt>
+				<dd>- <font class="code">git checkout -b <i>branch-name</i> <i>tag</i></font></dd>
+				<dt>can checkout a tag directly</dt>
+				<dd>- <font class="code">git checkout <i>tag</i></font></dd>
+				<dd>- this can lead to a detached HEAD state</dd>
+				<dd>- new commits won't belong to any branch, like working in an unnamed branch. garbage collection will eventually delete it.</dd>
+				<dd>- to save any commits from detached HEAD state</dd>
+				<dd>&nbsp;&nbsp;<font class="code">git tag <i>temp</i></font></dd>
+				<dd>&nbsp;&nbsp;or</dd>
+				<dd>&nbsp;&nbsp;<font class="code">git branch <i>temp_branch</i></font></dd>
+				<dd>&nbsp;&nbsp;or (better)</dd>
+				<dd>&nbsp;&nbsp;<font class="code">git checkout -b <i>temp_branch</i></font></dd>
+				<dd>&nbsp;&nbsp;looks like there is a new command that was not covered in the course</dd>
+				<dd>&nbsp;&nbsp;<font class="code">git switch -c <i>new_branch</i></font></dd>
+				<dd>&nbsp;&nbsp;comes up when you checkout into a detached HEAD state.</dd>
+			</dl>
+		</li>
+	</ul>
+	<li class="topic">Interactive Staging</li>
+	<ul class="disc">
+		<li>Interactive mode
+			<dl>
+				<dt>Stage changes interactively</dt>
+				<dt>allows staging portions of changed files</dt>
+				<dt>helps make smaller, focused commits</dt>
+				<dt><table style="width:240px">
+					<tr><td class="codecel">git add --interactive</td></tr>
+					<tr><td class="codecel">git add -i</td></tr>
+					</table>
+				</dt>
+				<dt><img src="./images/git-intermediate-techniques-interactive-01.jpg" alt="interactive menu"></dt>
+			</dl>
+		</li>
+		<li>Patch mode
+			<dl>
+				<dt>Stage only portions of a changed file</dt>
+				<dt>option #5 on interactive menu</dt>
+				<dt>a "hunk" is an area where two file differ</dt>
+				<dt>hunks can be staged, skipped or split into smaller hunks</dt>
+				<dt>can also enter patch mode with the --patch/-p parameter</dt>
+				<dd><table style="width:240px">
+					<tr><td class="codecel">git add --patch</td></tr>
+					<tr><td class="codecel">git add -p</td></tr>
+					<tr><td class="codecel">git stash -p</td></tr>
+					<tr><td class="codecel">git reset -p</td></tr>
+					<tr><td class="codecel">git checkout -p</td></tr>
+					<tr><td class="codecel">git commit -p</td></tr>
+					</table>
+				</dd>
+			</dl>
+		</li>
+		<li>Split a hunk
+			<dl>
+				<dt>hunks can contain multiple changes</dt>
+				<dt>tell git to split the hunk further</dt>
+				<dt>requires one or more unchanged lines between the changes</dt>
+			</dl>
+		</li>
+		<li>Edit a hunk
+			<dl>
+				<dt><img src="./images/git-intermediate-techniques-interactive-02.jpg" alt="patch mode menu"></dt>
+				<dt>select 'e' in patch mode and follow the instructios in the diff file</dt>
+				<dt><img src=img src="./images/git-intermediate-techniques-interactive-03.jpg" alt="diff file edit mode"></dt>
+			</dl>
+		</li>
+	</ul>
+	<li class="topic">Share Select Changes</li>
+	<ul class="disc">
+		<li>Cherry-picking commits
+			<dl>
+				<dt>Apply the changes from one or more existing commits</dt>
+				<dt>Each existing commit is recorded as a new commit on the current branch</dt>
+				<dt>Conceptually like copy-paste</dt>
+				<dd>- except each commit will have a new SHA and history</dd>
+				<dt><table style="width:400px">
+					<tr><td class="codecel">git cherry-pick <i><b>SHA</b></i></td><td>specific commit</td></tr>
+					<tr><td class="codecel">git cherry-pick <i><b>SHA1..SHA2</b></i></td><td>a range of commits</td></tr>
+					</table>
+				</dt>
+				<dt>Cannot cherry-pick a merge commit</dt>
+				<dt>Use --edit or -e to edit the commit message</dt>
+				<dd>- by default uses the originjal commit message</dd>
+				<dt>Can result in conflicts that must be resolved</dt>
+			</dl>
+		</li>
+		<li>Resolve cherry-picking conflicts</li>
+		<li>Create diff patches
+			<dl>
+				<dt>Share changes via files</dt>
+				<dt>Useful when:</dt>
+				<dd>- changes are not ready for public branch</dd>
+				<dd>- collaborators do not share a remote</dd>
+				<dd>- discussion, review, approval process</dd>
+				<dt><table style="width:400px">
+					<tr><td class="codecel">git diff <i><b>from_SHA to_SHA</b></i> > <i><b>filename.diff</b></i></td></tr>
+					</table>
+				</dt>
+				<dd>- .diff is standard ext for diff files</dd>
+			</dl>
+		</li>
+		<li>Apply diff patches
+			<dl>
+				<dt>Apply changes in a diff patch to the working dir</dt>
+				<dt>Makes changes but does not commit</dt>
+				<dt>No commit history is transfered</dt>
+				<dt><table style="width:400px">
+					<tr><td class="codecel">git apply <i>filename.diff</i></td></tr>
+					</table>
+				</dt>
+				<dd>no output if successful</dd>
+				<dt>To apply a diff the affected files just need to be able to match up. They don't need to be on the same revision.</dt>
+			</dl>
+		</li>
+		<li>Create formatted patches
+			<dl>
+				<dt>Export each commit in Unix mailbox format</dt>
+				<dt>Useful for email distribution of changes</dt>
+				<dt>Includes commit messages</dt>
+				<dt>One commit per file by default</dt>
+				<dt><table style="width:600px">
+					<tr><td class="codecel">git format-patch <i><b>from_SHA..to_SHA</b></i></td></tr><tr><td>export all in a range</td></tr>
+					<tr><td class="codecel">git format-patch <i><b>master</b></i></td></tr><tr><td>all commits on current branch not in master</td></tr>
+					<tr><td class="codecel">git format-patch -1 <i><b>SHA</b></i></td></tr><tr><td>export a single commit</td></tr>
+					<tr><td class="codecel">git format-patch <i><b>master</b></i> -o <i>dir_name</i></td></tr><tr><td>where to output files</td></tr>
+					<tr><td class="codecel">git format-patch <i><b>from_SHA..to_SHA</b></i>--stdout > <i>filename.patch</i></td></tr><tr><td>create a single file</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Apply formatted patches
+			<dl>
+				<dt>Extracts author, commit message & changes and applies them to the current branch</dt>
+				<dt>Similar to cherry-picking: same changes, different SHA's</dt>
+				<dt>Commit history is transfered</dt>
+				<dt><table style="width:500px">
+					<tr><td class="codecel">git am <i><b>dir_name/filename.patch</b></i></td><td>apply single patch</td></tr>
+					<tr><td class="codecel">git am <i><b>dir_name/*.patch</b></i></td><td>apply all in dir_name</td></tr>
+					</table>
+				</dt>
+				<dd>- if applying singly, must be in order</dd>
+			</dl>
+		</li>
+	</ul>
+	<li class="topic">Rebasing</li>
+	<ul class="disc">
+		<li>Rebase commits
+			<dl>
+				<dt>Take commits from a branch and replay them at the end of another branch</dt>
+				<dt>Useful to integrate recent commits without merging</dt>
+				<dt>Maintains a cleaner, more linear project history</dt>
+				<dt>Ensures topic branch commits apply cleanly</dt>
+				<dt><table style="width:600px">
+					<tr><td class="codecel">git rebase <i><b>branch</b></i></td><td>rebase current to branch</td></tr>
+					<tr><td class="codecel">git rebase <i><b>master branch</b></i></td><td>rebase branch to master</td></tr>
+					<tr><td class="codecel">git merge-base <i><b>master branch</b></i></td><td>returns commit where branch diverges</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Perform a rebase
+			<dl>
+				<dt>Performed a simple rebase</dt>
+			</dl>
+		</li>
+		<li>Merging vs. rebasing
+			<dl>
+				<dt>Two ways to incorporate changes from one branch into another branch</dt>
+				<dt>Similar ends but the means are different</dt>
+				<dt>Merging</dt>
+				<dd>- Adds a merge commit</dd>
+				<dd>- Nondestructive</dd>
+				<dd>- Complete record of what happened and when</dd>
+				<dd>- Easy to undo</dd>
+				<dd>- Logs can become cluttered and non-linear</dd>
+				<dt>Rebasing</dt>
+				<dd>- No additioanal merge commit</dd>
+				<dd>- Destructive: SHA changes, commits are rewritten</dd>
+				<dd>- No longer as complete record of what happened and when</dd>
+				<dd>- Tricky to undo</dd>
+				<dt><font color=#ffa500><b>The Golden Rule of Rebasing</b></font></dt>
+				<dd><b>Thou shalt not rebase a public branch.</b></dd>
+				<dd>- Rebase abandons existing shared commits and creates new, similar commits instead.</dd>
+				<dd>- Collaborators would see the project history vanish.</dd>
+				<dd>- Getting all collaborators back in sync can be a nightmare.</dd>
+				<dt>When to Merge</dt>
+				<dd>- to allow commits to stand out or be clearly grouped</dd>
+				<dd>- to bring large topic branches back into master</dd>
+				<dd>- anytime a topic branch is already public and being used by others (<font color=#ffa500>The Golden Rule of Rebasing</font>)</dd>
+				<dt>When to Rebase</dt>
+				<dd>- to add minor commits in master to a topic branch</dd>
+				<dd>- to move commits from one branch to another</dd>
+			</dl>
+		</li>
+		<li>Resolve rebase conflicts
+			<dl>
+				<dt>Rebasing creates new commits on existing code</dt>
+				<dt>Git pauses rebase before each conflicting commit</dt>
+				<dt>Similar to resolving merge conflicts</dt>
+				<dt><table style="width:500px">
+					<tr><td class="codecel">git rebase --continue</td><td>make commit and continue on</td></tr>
+					<tr><td class="codecel">git rebase --skip</td><td>skip the conflict and continue rebase</td></tr>
+					<tr><td class="codecel">git rebase --abort</td><td>cancel the rebase</td></tr>
+					<tr><td>Example:</td><td></td></tr>
+					<tr><td class="codecel">git rebase <i><b>master camping</b></i></td><td>rebase camping to master</td></tr>
+					<tr><td></td><td>resolve the merge conflict</td></tr>
+					<tr><td class="codecel">git add <i><b>filename</b></i></td><td>to mark the resolution</td></tr>
+					<tr><td class="codecel">git rebase --continue</td><td>make commit and continue on</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Rebase onto other branches
+			<dl>
+				<dt><img src="./images/git-intermediate-techniques-ch5-01.jpg" alt="source tree"></dt>
+				<dt><table style="width:500px">
+					<tr><td class="codecel">git rebase --onto <i><b>newbase upstream branch</b></i></td></tr>
+					<tr><td class="codecel">git rebase --onto <i><b>master ecommerce new_feature</b></i></td></tr>
+					</table>
+				</dt>
+				<dd>- take new_feature from ecommerce and move it to the tip of master</dd>
+				<dd>&nbsp;&nbsp;<font class="code">git rebase <i><b>ecommerce new_feature</b></i></font> would be normal rebase, <font class="code">--onto <i><b>master</b></i></font> tells git to make master the new base for new_feature.</dd>
+			</dl>
+		</li>
+		<li>Undo a rebase
+			<dl>
+				<dt>Can undo simple rebases</dt>
+				<dt>Need to remember that rebase is destructive.</dt>
+				<dt>SHA's, commit messages and changes can all be changed.</dt>
+				<dt>Undoing complex rebases may lose data.</dt>
+				<dt><table style="width:500px">
+					<tr><td class="codecel">git reset --hard ORIG_HEAD</td></tr>
+					<tr><td class="codecel">git rebase --onto <i><b>SHA master new_feature</b></i></td></tr>
+					</table>
+				</dt>
+				<dd>- Undo, unless ORIG_HEAD has changed again (rebase, reset, merge change ORIG_HEAD)</dd>
+			</dl>
+		</li>
+		<li>Interactive rebasing
+			<dl>
+				<dt>Chance to modify commits as the are being replayed.</dt>
+				<dt>Opens the git-rebod-todo file for editing.</dt>
+				<dt>Can reorder or skip commits</dt>
+				<dt>Can edit commit contents</dt>
+				<dt>Interactive rebase actions</dt>
+				<dd>- pick, drop</dd>
+				<dd>- reword, edit</dd>
+				<dd>- squash, fixup</dd>
+				<dd>- exec (run an .exe for the cmdline. not common. was not coverewd)</dd>
+				<dt><table style="width:500px">
+					<tr><td class="codecel">git --interactive <i><b>master new_feature</b></i></td></tr>
+					<tr><td class="codecel">git -i <i><b>master new_feature</b></i></td></tr>
+					</table>
+				</dt>
+				<dt>To rebase last 3 commits ontop the same branch with the oppurtunity to modify them</dt>
+				<dd>- <font class="code">git rebase -i HEAD~3</font></dd>
+			</dl>
+		</li>
+		<li>Squash commits
+			<dl>
+				<dt>Means to fold two or more commits into one. (Squashing them together)</dt>
+				<dt>squash: combine change sets, concatenate messages</dt>
+				<dt>fixup: combine change sets, discard this message</dt>
+				<dt>If commits are by different authors, the first author is used.</dt>
+				<dt>Example of a rebase todo list:</dt>
+				<dd>&nbsp;&nbsp;<img src="./images/git-intermediate-techniques-ch5-02.jpg" alt="rebase todo list example"></dd>
+				<dd>&nbsp;&nbsp;this will end in a single commit. b2baf90 will get squished up into 81a73ff. the one at the top should<br>
+				    &nbsp;&nbsp;always be a pick. c0261b3 will get squished up but you'll get prompted to edit. 0f7760e will get <br>
+					&nbsp;&nbsp;squished up. At the end you'll be prompted to edit the final commit message that will have all of the<br>
+					&nbsp;&nbsp;commit messages of all four commits.</dd>
+				<dt><table style="width:600px">
+					<tr><td class="codecel">git rebase -i HEAD~3</td><td>rebase last 3 commits ontop the same branch</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Pull rebase
+			<dl>
+				<dt>Fetch from remote then rebasse instead of merge</dt>
+				<dt>Keeps history cleaner by reducing the merge commits</dt>
+				<dt>Only use on localcommits not shared to remote</dt>
+				<dt><table style="width:500px">
+					<tr><td class="codecel">git pull --rebase</td></tr>
+					<tr><td class="codecel">git pull -r</td></tr>
+					<tr><td class="codecel">git pull --rebase=preserve</td></tr>
+					<tr><td class="codecel">git pull --rebase=interactive</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+	<li class="topic">Track Down Problems</li>
+	<ul class="disc">
+		<li>Log options
+			<dl>
+				<dt>Log is primary interface to Git</dt>
+				<dt>Log has many otions</dt>
+				<dt>Sorting, filtering, output formating</dt>
+				<dt><font class="code">git help log</font> <b>use it!</b></dt>
+				<br>
+				<dt><img src="./images/git-intermediate-techniques-ch6-01.jpg" alt="logging examples"></dt>
+				<br>
+				<dt>-p/--patches is sending output to linux <font class="code">less</font> command.<dt>
+				</dt>So <font class="code">less</font>'s options are available. use <font class="code">man less</font> for additional details.</dt>
+			</dl>
+		</li>
+		<li>Blame
+			<dl>
+				<dt>Browser annoted file</dt>
+				<dt>Determine who changed which lines in a file and why</dt>
+				<dt>Useful for probing the history behind a file's contents</dt>
+				<dt>Useful for identifying which commit introduced a bug</dt>
+				<dt><table style="width:700px">
+					<tr><td class="codecel">git blame <i><b>filename.txt</b></i></td><td></td></tr>
+					<tr><td class="codecel">git blame -w <i><b>filename.txt</b></i></td><td>ignore whitespace</td></tr>
+					<tr><td class="codecel">git blame -L <i><b>startline,endline filename.txt</b></i></td>specific lines, no colon (:) between endline and filename<td></td></tr>
+					<tr><td class="codecel">git blame -L <i><b>startline,+(int) filename.txt</b></i></td><td>range is startline to startline+int</td></tr>
+					<tr><td class="codecel">git blame SHA <i><b>filename.txt</b></i></td><td></td></tr>
+					<tr><td class="codecel">git blame SHA -- <i><b>filename.txt</b></i></td><td>-- depends on if using other options</td></tr>
+					<tr><td class="codecel">git config --global alias.praise blame</td><td>if you want to use praise instead of blame</td></tr>
+					<tr><td class="codecel">git annotate <i><b>filename.txt</b></i></td><td>similar to blame but slightly different output format</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+		<li>Bisect
+			<dl>
+				<dt>Find the commit that introduced a bug or regression</dt>
+				<dt>Mark last good revision and first bad revision</dt>
+				<dt>Resets code to mid-point</dt>
+				<dt>Mark as good or bad revision</dt>
+				<dt>Repeat</dt>
+				<dt><table style="width:525px">
+					<tr><td class="codecel">git bisect start</td></tr>
+					<tr><td class="codecel">git bisect bad <i><b>treesish</b></i></td></tr>
+					<tr><td class="codecel">git bisect good <i><b>treesish</b></i></td></tr>
+					<tr><td class="codecel">git bisect reset</td></tr>
+					</table>
+				</dt>
+				<dd>- if <i><b>treesish</b></i> is blank for bad HEAD for current branch is used</dd>
+				<dd>- can use old/new for good/bad</dd>
+				<dd>- reset stop and takes you back to HEAD.</dd>
+				<dd>note</dd>
+			</dl>
+		</li>
+	</ul>
+	<li class="topic">Conclusion</li>
+	<ul class="disc">
+		<li>Next steps
+			<dl>
+				<dt>description</dt>
+				<dd>- note</dd>
+				<dt>Completed: 5/22/20</dt>
+				<dt>Next Course: <a href="">---</a></dt>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+<!--
+	<font style="color:red"><b>Topics not updated below here.</b></font><br>
+	<li class="topic">new topic</li>
+	<ul class="disc">
+		<li>topic
+			<dl>  
+				<dt>highlight</dt>
+				<dd>- note</dd>
+				<dt><table style="width:525px">
+					<tr><td class="codecel">git command</td><td>description</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+
+	<li class="topic">new topic</li>
+	<ul class="disc">
+		<li>topic
+			<dl>
+				<dt>highlight</dt>
+				<dd>- note</dd>
+				<dt><table style="width:525px">
+					<tr><tr><td class="codecel">git command</td><td>description</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+-->
+
+</ol>
+<h2 ></h2>
+<p style="color:red"></p>
+<p title="I'm a tooltip"></p>
+<a href="./index.html">Back</a>
+</body>
+</html>
