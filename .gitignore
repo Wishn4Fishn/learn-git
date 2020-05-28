@@ -7,3 +7,5 @@ demo_repo/
 collaborator_demo_repo/
 *.diff
 patches/
+xxx-*
+zzz-*
