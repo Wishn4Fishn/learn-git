@@ -18,6 +18,10 @@
 		background-color:powderblue;
 		color:blue;
 	}
+	td.topleft {
+		vertical-align:top;
+		text-align:left;
+	}
 	li.topic {
 		color:blue;
 	}
@@ -37,22 +41,70 @@
 
 <ul class="square">
 	<li class="topic"><a href="https://www.networkworld.com/video/series/8559/2-minute-linux-tips">Network World: 2-Minute Linux Tips</a></li>
-	<ul class="disc">
-		<li>mv
-			<dl>  
-				<dt>rename a file</dt>
-				<dt>move a file to a new location</dt>
-			</dl>
-		</li>
-		<li>script
-			<dl>  
-				<dt>used to record commands and output</dt>
-				<dt><font class="code">script <i><b>test1</b></i></font></dt>
-				<dt>exit to end the recording</dt>
-				<dt>recording and results in text file <i><b>test1</b></i>.</dt>
-			</dl>
-		</li>
-	</ul>
+		<dt>
+			<table style="width:100%">
+				<tr>
+					<td class="topleft"><ul class="disc"><li><b>mv</b>
+							<dl>
+								<dt>Description: rename a file</dt>
+								<dt>Usage:</dt>
+								<dt>move a file to a new location</dt>
+							</dl>
+						</li></ul>
+					</td>
+					<td class="topleft"><ul class="disc"><li><b>script</b>
+							<dl>  
+								<dt>Description: used to record commands and output</dt>
+								<dt>Usage:</dt>
+								<dt><font class="code">script <i><b>test1</b></i></font></dt>
+								<dt>exit to end the recording</dt>
+								<dt>recording and results in text file <i><b>test1</b></i>.</dt>
+							</dl>
+						</li></ul>
+					</td>
+					<td class="topleft"><ul class="disc"><li><b>xz</b>
+							<dl>  
+								<dt>Description: file compression command</dt>
+								<dt>Usage:</dt>
+								<dt><font class="code">xz <i><b>filename</b></i></font></dt>
+								<dd>- result is filename.xz</dt>
+								<dt><font class="code">unxz <i><b>filename.xz</b></i></font></dt>
+								<dd>- to uncompress</dt>
+								<dt><font class="code">xzcat <i><b>filename.xz</b></i></font></dt>
+								<dd>- to view the contents of a compress file.</dt>
+								<dt>man pages for xz suggests using <font class="code">xz -d</font> to decompress instead of <font class="code">unxz</font>.</dt>
+							</dl>
+						</li></ul>
+					</td>
+				</tr>
+				<tr>
+					<td class="topleft"><ul class="disc"><li><b>next command</b>
+							<dl>
+								<dt>Description: </dt>
+								<dt>Usage:</dt>
+								<dt><font class="code">usage <i><b>test1</b></i></font></dt>
+							</dl>
+						</li></ul>
+					</td>
+					<td class="topleft"><ul class="disc"><li><b>next command</b>
+							<dl>
+								<dt>Description: </dt>
+								<dt>Usage:</dt>
+								<dt><font class="code">usage <i><b>test1</b></i></font></dt>
+							</dl>
+						</li></ul>
+					</td>
+					<td class="topleft"><ul class="disc"><li><b>next command</b>
+							<dl>
+								<dt>Description: </dt>
+								<dt>Usage:</dt>
+								<dt><font class="code">usage <i><b>test1</b></i></font></dt>
+							</dl>
+						</li></ul>
+					</td>
+				</tr>
+			</table>
+		</dt>
 	<li class="topic"><a href="https://www.doceeo.com/post/12-linux-commands-to-have-some-fun-in-the-terminal">12 Linux Commands to Have Some Fun in the Terminal</a></li>
 	Nothing really useful here but could be fun. These won't work in gitbash. And there are more than 12.<br>
 	<ol style="1">
