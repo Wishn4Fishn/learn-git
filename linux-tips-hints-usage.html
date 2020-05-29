@@ -31,7 +31,7 @@
 	ul.square {
 		list-style-type:square;
 	}
-	<!-- space: &nbsp; -->
+	<!-- space: &nbsp; &emsp;-->
 </style>
 </head>
 <body style="background-color:powderblue">
@@ -67,30 +67,34 @@
 								<dt>Description: file compression command</dt>
 								<dt>Usage:</dt>
 								<dt><font class="code">xz <i><b>filename</b></i></font></dt>
-								<dd>- result is filename.xz</dt>
+								<dd>- result is filename.xz</dd>
 								<dt><font class="code">unxz <i><b>filename.xz</b></i></font></dt>
-								<dd>- to uncompress</dt>
+								<dd>- to uncompress</dd>
 								<dt><font class="code">xzcat <i><b>filename.xz</b></i></font></dt>
-								<dd>- to view the contents of a compress file.</dt>
+								<dd>- to view the contents of a compress file.</dd>
 								<dt>man pages for xz suggests using <font class="code">xz -d</font> to decompress instead of <font class="code">unxz</font>.</dt>
 							</dl>
 						</li></ul>
 					</td>
 				</tr>
 				<tr>
-					<td class="topleft"><ul class="disc"><li><b>next command</b>
+					<td class="topleft"><ul class="disc"><li><b>tac</b>
 							<dl>
-								<dt>Description: </dt>
+								<dt>Description:same as <font class="code">cat</font> but in reverse. </dt>
 								<dt>Usage:</dt>
-								<dt><font class="code">usage <i><b>test1</b></i></font></dt>
+								<dt><font class="code">tac <i><b>filename</b></i></font></dt>
 							</dl>
 						</li></ul>
 					</td>
-					<td class="topleft"><ul class="disc"><li><b>next command</b>
+					<td class="topleft"><ul class="disc"><li><b>ln</b>
 							<dl>
-								<dt>Description: </dt>
+								<dt>Description: Used to create a link to a file or driectory.</dt>
 								<dt>Usage:</dt>
-								<dt><font class="code">usage <i><b>test1</b></i></font></dt>
+								<dt><font class="code">ln -s <i><b>filepath/filename</b></i></font></dt>
+								<dd>- create a symbolic link to <i><b>filepath/filename</b></i><dd>
+								<dt><font class="code">ln <i><b>filepath/filename filename</b></i></font></dt>
+								<dd>- create a hard link to <i><b>filepath/filename</b></i>. same file will exist in two places.<dd>
+								
 							</dl>
 						</li></ul>
 					</td>
