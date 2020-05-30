@@ -1,0 +1,29 @@
+
+font.code {
+	font-family: Courier New, Courier, monospace;
+	background-color:lightgrey;
+	color:black;
+}
+td.codecel {
+	font-family: Courier New, Courier, monospace;
+	background-color:lightgrey;
+	color:black;
+}
+td.textcel {
+	font-family: "Times New Roman", Times, serif;
+	background-color:powderblue;
+	color:blue;
+}
+td.topleft {
+	vertical-align:top;
+	text-align:left;
+}
+li.topic {
+	color:blue;
+}
+ul.disc {
+	list-style-type:disc;
+}
+ul.square {
+	list-style-type:square;
+}
