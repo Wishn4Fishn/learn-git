@@ -2,37 +2,8 @@
 <head>
 	<meta charset="utf-8">
 	<title>Linux Tips, Hints, Usage</title>
-<style>
-	font.code {
-		font-family: Courier New, Courier, monospace;
-		background-color:lightgrey;
-		color:black;
-	}
-	td.codecel {
-		font-family: Courier New, Courier, monospace;
-		background-color:lightgrey;
-		color:black;
-	}
-	td.textcel {
-		font-family: "Times New Roman", Times, serif;
-		background-color:powderblue;
-		color:blue;
-	}
-	td.topleft {
-		vertical-align:top;
-		text-align:left;
-	}
-	li.topic {
-		color:blue;
-	}
-	ul.disc {
-		list-style-type:disc;
-	}
-	ul.square {
-		list-style-type:square;
-	}
+	<link rel="stylesheet" type="text/css" href="mystyle.css">
 	<!-- space: &nbsp; &emsp;-->
-</style>
 </head>
 <body style="background-color:powderblue">
 <h1 style="color:blue;font-size:60px;font-family:courier;" title="Linux Tips, Hints, Usage">
@@ -44,7 +15,36 @@
 		<dt>
 			<table style="width:100%">
 				<tr>
-					<td class="topleft"><ul class="disc"><li><b>mv</b>
+					<td class="topleft" style="width:33%"><ul class="disc"><li><b>chage</b>
+							<dl>
+								<dt>Description: change age.</dt>
+								<dt>Usage:</dt>
+								<dt><font class="code">chage -l <i><b>yourusername</b></i></font></dt>
+								<dd>- view your account settings</dd>
+								<dt><font class="code">sudo chage -l <i><b>username</b></i></font></dt>
+								<dd>- view another users settingd</dd>
+								<dt><font class="code">sudo chage -M <i><b>number username</b></i></font></dt>
+								<dd>- change the max life for a password</dd>
+								<dt><font class="code">sudo chage -m <i><b>number username</b></i></font></dt>
+								<dd>- change the minimum time before a password</dd>
+								<dt><font class="code">sudo chage -E <i><b>yyyy-mm-dd username</b></i></font></dt>
+								<dd>- set the expiration date</dd>
+							</dl>
+						</li></ul>
+					</td>
+					<td class="topleft style="width:33%"><ul class="disc"><li><b>ln</b>
+							<dl>
+								<dt>Description: Used to create a link to a file or driectory.</dt>
+								<dt>Usage:</dt>
+								<dt><font class="code">ln -s <i><b>filepath/filename</b></i></font></dt>
+								<dd>- create a symbolic link to <i><b>filepath/filename</b></i><dd>
+								<dt><font class="code">ln <i><b>filepath/filename filename</b></i></font></dt>
+								<dd>- create a hard link to <i><b>filepath/filename</b></i>. same file will exist in two places.<dd>
+								
+							</dl>
+						</li></ul>
+					</td>
+					<td class="topleft style="width:33%"><ul class="disc"><li><b>mv</b>
 							<dl>
 								<dt>Description: rename a file</dt>
 								<dt>Usage:</dt>
@@ -52,7 +52,9 @@
 							</dl>
 						</li></ul>
 					</td>
-					<td class="topleft"><ul class="disc"><li><b>script</b>
+				</tr>
+				<tr>
+					<td class="topleft style="width:33%"><ul class="disc"><li><b>script</b>
 							<dl>  
 								<dt>Description: used to record commands and output</dt>
 								<dt>Usage:</dt>
@@ -62,7 +64,15 @@
 							</dl>
 						</li></ul>
 					</td>
-					<td class="topleft"><ul class="disc"><li><b>xz</b>
+					<td class="topleft style="width:33%"><ul class="disc"><li><b>tac</b>
+							<dl>
+								<dt>Description:same as <font class="code">cat</font> but in reverse. </dt>
+								<dt>Usage:</dt>
+								<dt><font class="code">tac <i><b>filename</b></i></font></dt>
+							</dl>
+						</li></ul>
+					</td>
+					<td class="topleft style="width:33%"><ul class="disc"><li><b>xz</b>
 							<dl>  
 								<dt>Description: file compression command</dt>
 								<dt>Usage:</dt>
@@ -78,7 +88,15 @@
 					</td>
 				</tr>
 				<tr>
-					<td class="topleft"><ul class="disc"><li><b>tac</b>
+					<td class="topleft style="width:33%"><ul class="disc"><li><b>qqq</b>
+							<dl>  
+								<dt>Description: used to record commands and output</dt>
+								<dt>Usage:</dt>
+								<dt><font class="code">script <i><b>test1</b></i></font></dt>
+							</dl>
+						</li></ul>
+					</td>
+					<td class="topleft style="width:33%"><ul class="disc"><li><b>qqq</b>
 							<dl>
 								<dt>Description:same as <font class="code">cat</font> but in reverse. </dt>
 								<dt>Usage:</dt>
@@ -86,29 +104,21 @@
 							</dl>
 						</li></ul>
 					</td>
-					<td class="topleft"><ul class="disc"><li><b>ln</b>
-							<dl>
-								<dt>Description: Used to create a link to a file or driectory.</dt>
+					<td class="topleft style="width:33%"><ul class="disc"><li><b>qqq</b>
+							<dl>  
+								<dt>Description: file compression command</dt>
 								<dt>Usage:</dt>
-								<dt><font class="code">ln -s <i><b>filepath/filename</b></i></font></dt>
-								<dd>- create a symbolic link to <i><b>filepath/filename</b></i><dd>
-								<dt><font class="code">ln <i><b>filepath/filename filename</b></i></font></dt>
-								<dd>- create a hard link to <i><b>filepath/filename</b></i>. same file will exist in two places.<dd>
-								
-							</dl>
-						</li></ul>
-					</td>
-					<td class="topleft"><ul class="disc"><li><b>next command</b>
-							<dl>
-								<dt>Description: </dt>
-								<dt>Usage:</dt>
-								<dt><font class="code">usage <i><b>test1</b></i></font></dt>
+								<dt><font class="code">xz <i><b>filename</b></i></font></dt>
+								<dd>- result is filename.xz</dd>
 							</dl>
 						</li></ul>
 					</td>
 				</tr>
 			</table>
 		</dt>
+		<dt>Skipping tips on at and convert.</dt>
+		<dd>- at has been deprecated and replaced with schtasks.</dd>
+		<dd>- convert if from a imaging app and not the os command.</dd>
 	<li class="topic"><a href="https://www.doceeo.com/post/12-linux-commands-to-have-some-fun-in-the-terminal">12 Linux Commands to Have Some Fun in the Terminal</a></li>
 	Nothing really useful here but could be fun. These won't work in gitbash. And there are more than 12.<br>
 	<ol style="1">
