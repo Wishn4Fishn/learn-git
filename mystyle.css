@@ -9,12 +9,24 @@ td.codecel {
 	background-color:lightgrey;
 	color:black;
 }
+td.outputcel {
+	font-family: Courier New, Courier, monospace;
+	background-color:black;
+	vertical-align:top;
+	text-align:left;
+}
 td.textcel {
 	font-family: "Times New Roman", Times, serif;
 	background-color:powderblue;
 	color:blue;
 }
 td.topleft {
+	vertical-align:top;
+	text-align:left;
+}
+td.yamlcel {
+	font-family: Courier New, Courier, monospace;
+	background-color:white;
 	vertical-align:top;
 	text-align:left;
 }
