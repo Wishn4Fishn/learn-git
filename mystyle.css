@@ -4,6 +4,10 @@ font.code {
 	background-color:lightgrey;
 	color:black;
 }
+font.yaml {
+	font-family: Courier New, Courier, monospace;
+	background-color:white;
+}
 td.codecel {
 	font-family: Courier New, Courier, monospace;
 	background-color:lightgrey;
