@@ -1,0 +1,447 @@
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Essential Ansible Training</title>
+	<link rel="stylesheet" type="text/css" href="mystyle.css">
+<!-- space: &nbsp; &emsp; -->
+</head>
+<body style="background-color:powderblue">
+<h1 style="color:blue;font-size:60px;font-family:courier;" title="LinkedIn course by Robert Starmer">
+	<center>Essential Ansible Training</center>
+</h1>
+<p>
+<a href="https://docs.ansible.com/ansible/latest/index.html">Ansible Documentation</a>
+<p>
+<ul class="disc">
+	<li class="topic">Course Description</li>
+	Ansible is an easy-to-use IT automation engine. It can transform and optimize tasks such as rolling updates with just a few lines of code. However, many organizations aren't using Ansible modules and playbooks in a reusable fashion; they are reinventing the wheel every time they automate. This training course introduces intermediate to advanced use cases for using the tool at scale. Instructor Robert Starmer shows how to reuse Ansible functionality with roles, encrypt secret data with Ansible Vault, support idempotence, and manage multiple groups of systems with Ansible Tower. He shows you how to string these concepts together to use Ansible in the most efficient way possible: variablizing resources, capturing your ideas into roles, and extending Ansible from simple server management to network management-and beyond.
+	<p>
+	<li class="topic">Learning objectives</li>
+		<ul class="disc"> 
+			<li>Task execution management</li>
+			<li>Looping tasks/li>
+			<li>Looping in templates</li>
+			<li>Reusing code with roles</li>
+			<li>Encrypting data</dt>
+			<li>Network manangement</li>
+			<li>Creating idempotent plays</li>
+			<li>Suystem infrastructure management</li>
+		</ul>
+	<li class="topic">Servers</li>
+		<dl>
+			<dt><table style="width:425px;border:1px solid black">
+				<caption>Built out in AWS QA.</caption>
+				<tr><th style="border:1px solid black">Server Name</th><th style="border:1px solid black">Ip Address</th><th style="border:1px solid black">Function</th></tr>
+				<tr><td style="border:1px solid black;align:center">vpc48-ym7j-2q17</td><td style="border:1px solid black">10.253.148.232</td><td style="border:1px solid black">Ansible Host</td></tr>
+				<tr><td style="border:1px solid black;align:center">vpc48-x89z-64m7</td><td style="border:1px solid black">10.253.144.251</td><td style="border:1px solid black">Target Host #1</td></tr>
+				<tr><td style="border:1px solid black;align:center">vpc48-xa2m-opar</td><td style="border:1px solid black">10.253.151.241</td><td style="border:1px solid black">Target Host #2</td></tr>
+				<tr><td style="border:1px solid black;align:center">vpc48-xa28-ppkm</td><td style="border:1px solid black">10.253.148.246</td><td style="border:1px solid black">Target Host #3</td></tr>
+				<tr><td style="border:1px solid black;align:center">vpc48-yw1k-aarw</td><td style="border:1px solid black">10.253.146.227</td><td style="border:1px solid black">Target Host #4</td></tr>
+				</table>
+			</dt>
+			<dt>Cron job to sutdown everyday at 5:30pm</dt>
+			<dd><table style="width:300px">
+				<tr><td class="codecel">sudo crontab -e</td></tr>
+				<tr><td class="yamlcel">30 17 * * * /sbin/shutdown now</td></tr>
+			</table></dd>
+			<dt>Re-start using the AWS QA UI</dt>
+			<dd>- It is possible to start from the cmd line using the AWS CLI but I don't have the permissions to do it.</dd>
+		</dl>
+	<p>
+	<li class="topic">What you should know</li>
+		<dl>
+			<dt>Basic knowledge of Ansible</dt>
+			<dd>- <a href="./learning-ansible.html">Learning Ansible</a></dd>
+			<dt>Understanding of the Unix command line</dt>
+			<dt>Unix command-line editor</dt>
+			<dt>Windows Subsystem for Linux required for PC users</dt>
+			<dt>Live target systems (local or cloud vm's) required to follow along with the exercise files</dt>
+			<dt>Scripts provided in exercise for network device automation tasks</dt>
+			<dd>- <a href="./Ex_Files_Ansible_EssT.zip">Ex_Files_Ansible_EssT.zip</a></dd>
+		</dl>
+	<p>
+</ul>
+
+<ol type="1">
+	<li class="topic">Ansible Overview and Setup</li>
+	<ul class="disc">
+		<li class="topic">Ansible overview</li>
+			<dl>
+				<dt>Ansible Basics</dt>
+				<dd>- Ansibles is designed to automate systems management tasks (modifying and managing a configuration file, for example)</dd>
+				<dd>- Allows creation of idempotent scripts</dd>
+				<dd>- Ansibles "programs" are called plays, and are a collection of tasks in a playbook</dd>
+				<dd>- Basic play structure:</dd>
+				<dd><table style="width:550px">
+					<tr><td class="yamlcel">---<br>
+					- hosts: all<br>
+					&emsp;tasks:<br>
+					&emsp;&emsp;- name: Do something<br>
+					&emsp;&emsp;&emsp;module:<br>
+					&emsp;&emsp;&emsp;&emsp;parameter: value<br>
+					&emsp;&emsp;&emsp;&emsp;parameter: &apos;{{variable}}&apos;</td></tr>
+					</table></dd>
+				<dd>- Plays are run against target hosts defined in an inventory</dd>
+				<dd><table style="width:550px">
+					<tr><td class="yamlcel">[web]<br>web1 ansible_ssh_host=web1.example.com variable=value<br>web2 ansible_ssh_host=web2.example.com variable=value2<br></td></tr>
+					</table></dd>
+			<dl>
+		<li class="topic">Environment setup</li>
+			<dl>
+				<dt>Lab Environment</dt>
+				<dt><ol type="1">
+					<li>Target hosts (Ubuntu 16.04 os)
+						<ul class="disc">
+							<li>Python 2.7 or later installed</li>
+							<li>Upstream interent access for package/software installation</li>
+							<li>Know management IP address</li>
+							<li>Virtual machines or physical hosts</li>
+						</ul>
+					</li>
+					<li>Network device target
+						<ul class="disc">
+							<li>Kernal-based Virtual Machine (KVM) host - 32gb, 8-thread, 4-core processor</li>
+							<li>VyOS 1.1.8 virtual routers installed</li>
+						</ul>
+					</li>
+					<li>Ansible host
+						<ul class="disc">
+							<li>Latest Ansible installed (2.4.3.0)</li>
+							<dt>- install as python package not using the os install tools</dt>
+							<li>Python netaddr package installed</li>
+							<li>Packet-python installed along with packet_net.py dynamic inventory script</li>
+							<dt>- need to find this for aws</dt>
+						</ul>	
+					</li>
+				</ol><dt>
+				<dt>Connectivity Model</dt>
+				<dt><img src="./images/essential-ansible-training-ch1-00.jpg" alt="Connectivity Model"></dt>
+			</dl>
+	</ul>
+	<li class="topic">Task Execution Management</li>
+	<ul class="disc">
+		<dl>
+			<dt>Getting unreachable error trying to run play books with aws ec2 instances. So just logging notes have not actually run anything.</dt>
+			<dt>Tried adding Access key ID and Secret access key to Ansible vault with:</dt>
+			<dd>- <font class="code">ansible-vault create aws_keys.yml</font></dd>
+			<dd>- Password: ansible</dd>
+			<dt>monitor the contents of tmp directory</dt>
+			<dd>- <font class="code">watch -t ls /tmp</font></dd>
+			<dt>copied the files in <a href="./Ex_Files_Ansible_EssT.zip">Ex_Files_Ansible_EssT.zip</a> to home dir on Ansible Host.</dt>
+			<dt>Inventory Location:</dt>
+			<dd>- ./ex_files_ansible_esst/exercise_files/</dd>
+			<dt>Exercise File Location:</dt>
+			<dd>- ./ex_files_ansible_esst/exercise_files/2-Tasks/tasks/</dd>
+		</dl>
+		<li>Defining task execution with host groups
+			<dl>
+				<dt>Inventory</dt>
+				<dd>- <a href="./files/ess-ans-inventory-ch2-1">modified ~/ex_files_ansible_esst/exercise_files/2-5-inventory</a></dt>
+				<dt>Playbook</dt>
+				<dd>- ~/ex_files_ansible_esst/exercise_files/2-Tasks/tasks/2-1-tasks.yml</dd>
+				<dd>- <font class="code">ansible-playbook -i 2-5-inventory 2-1-tasks.yml -e file_state=touch</font></dd>
+			</dl>
+		</li>
+		<li>Using Tags to limit play execution
+			<dl>
+				<dt>To run a specific task:</dt>
+				<dd>- <font class="code">ansible-playbook -i inventory 2-2-tasks.yml <b>--tags create-file</b></font></dd>			
+				<dt>To run everything but a specific task:</dt>
+				<dd>- <font class="code">ansible-playbook -i inventory 2-2-tasks.yml <b>--skip-tags create-file</b></font></dd>			
+				<dt>To skip a specific task and run a specific task:</dt>
+				<dd>- <font class="code">ansible-playbook -i inventory 2-2-tasks.yml <b>--skip-tags create-file --tags create-file</b></font></dd>			
+			</dl>
+		</li>
+		<li>Executing tasks on localhost
+			<dl>
+				<dt>Faster as it doesn't need to ssh to a server.</dt>
+				<dt>If a task is going to ssh to localhost, localhost (127.0.0.1) needs to be in /etc/host file or you pass it at the cmd line.</dt>
+				<dd>- <font class="code">ansible-playbook -i 2-5-inventory 2-3-tasks.yml</font></dd>
+			</dl>
+		</li>
+		<li>Limiting plays from the command line
+			<dl>
+				<dt>To skip tasks</dt>
+				<dd>- <font class="code">ansible-playbook -i 2-5-inventory 2-4-tasks.yml -e file_state=touch --start-at-task='the second task'</font></dd>
+				<dd>starts at the start-at-task point and runs to the end.</dd>
+			</dl>
+		</li>
+		<li>Specifying variables via inventory
+			<dl>
+				<dt>See basic variable definition in <a href="./files/ess-ans-inventory-ch2-1">inventory</a></dt>
+				<dd>- <font class="code">ansible-playbook -i 2-5-inventory 2-5-tasks.yml -e file_state=touch</font></dd>
+			</dl>
+		</li>
+		<li>Defining inventory dynamically
+			<dl>
+				<dt><b><i>Will need to look up the module for AWS.</b></i></dt>
+				<dt>Commands below are for packet.net</dt>
+				<dt>To get available dynamic inventory:</dt>
+				<dd>- <font class="code">packet_nt.py --list</font></dd>			
+				<dt>To run a playbook against the inventory returned by packet_nt.py</dt>
+				<dd>- <font class="code">ansible-playbook -i packet_nt.py 2-6-tasks.yml --tags creat-file</font></dd>
+			</dl>
+		</li>
+		<li>Variables with dynamic playbooks
+			<dl>
+				<dt>In 2-7-inventory<br>&emsp;<font class="yaml">[all:children]<br></font>&emsp;<font class="yaml">tag_all</font><br>maps "all" tag to "tag_all". 2-7-inventory just maps one group to another.</dt>
+				<dd>- <font class="code">ansible-playbook -i packet_nt.py -i 2-7-inventory 2-7-tasks.yml -e file_state=touch</font></dd>
+			</dl>
+		</li>
+		<li>Jinja and templates
+			<dl>
+				<dt>Jinga 2 is the Python based templating language for Ansible.</dt>
+				<dd>- <font class="code">ansible-playbook -i inventory 2-8-tasks.yml --tags=create</font></dd>
+			</dl>
+		</li>
+		<li>Host facts for conditional execution
+			<dl>
+				<dt><font class="code">ansible -m debug -i inventory -a "var=hostvars['web2']" web1</font></dt>
+				<dd>- Get the data that Ansible knows about a host not what a host can discover about another host.</dd>
+			</dl>
+		</li>
+		<li>Looping tasks with variable lists
+			<dl>
+				<dt><font class="yaml">vars:</font><br>
+				&emsp;<font class="yaml">packages: [git,vim,ruby]</font><br>...<br>
+				&emsp;<font class="yaml">name: '{{item}}'</font><br>
+				<font class="yaml">with_items: '{{packages}}'</font></dt>
+				<dd>- with_items in a task will loop through the item in packages.</dd>
+				<dt><font class="code">ansible-playbook -i inventory 2-10-tasks.yml -e file_state=touch -e pkg_state=latest</font></dt>
+				<dt><font class="code">ansible-playbook -i inventory 2-10-tasks.yml -e file_state=absent -e pkg_state=absent</font></dt>
+				<dd>- uninstall/cleanup.</dd>
+			</dl>
+		</li>
+		<li>Looping tasks with dictionaries
+			<dl>
+				<dt><img src="./images/essential-ansible-training-ch2-00.jpg" alt="inventory 2-11-tasks.yml"></dt>
+				<dt><font class="code">ansible-playbook -i inventory 2-11-tasks.yml -e file_state=touch</font></dt>
+			</dl>
+		</li>
+		<li>Looping in tempates with variable lists
+			<dl>
+				<dt>watch this one again. started dozing.</dt>
+				<dd>- note</dd>
+				<dt><font class="code">ansible-playbook -i inventory 2-12-tasks.yml -e file_state=touch</font></dt>
+			</dl>
+		</li>
+		<li>Looping in templates with dictionaries
+			<dl>
+				<dt><a href="./files/essential_ansible/2-Tasks/tasks/2-13-tasks.yml">Dictionary and Playbook</a></dt>
+				<dt><a href="./files/essential_ansible/2-Tasks/tasks/templates/2-13-template.j2">Template</a></dt>
+				<dt><font class="code">ansible-playbook -i inventory 2-13-tasks.yml --tags create</font></dt>
+				<dd><img src="./images/essential-ansible-training-ch2-01.jpg" alt="output 2-13-tasks.yml"></dd>
+				<dd>- --tags destroy to clean-up afterwards</dd>
+			</dl>
+		</li>
+		<li>Testing plays with check mode
+			<dl>
+				<dt>check mode typically in all modules.</dt>
+				<dt>allows you to run the code as if it were live code.</dt>
+				<dt><font class="code">--check</font> will compile and run the codse without actually doing the tasks.</dt>
+				<dd>- allows you to make sure that everything is set/defined. </dd>
+			</dl>
+		</li>
+	</ul>
+	<li class="topic">Roles</li>
+	<ul class="disc">
+		<a href="https://galaxy.ansible.com/intro">Ansible Galaxy Web UI</a><br>
+		<li>Managing complex playbooks with roles
+			<dl>
+				<dt><b>need to watch this one a couple more times.</b></dt>
+				<dt>To create boilerplate for a new role</dt>
+				<dd><font class="code">ansible-galaxy init &lt;rolename&gt;</font></dd>
+				<dd><img src="./images/essential-ansible-training-ch3-01.jpg" alt="results of ansible-galaxy init"></dd>
+				<dt><font class="code">./meta/main.yml</font></dt>
+				<dd>- meta data used by Galaxy.</dd>
+				<dd>- all directories have a main.yml.</dd>
+				<dd>- file is required for a a directoy to be meaningful to a role.</dd>
+				<dd>- galaxy_tags: [] used to make it easier to search for the role if it is uploaded to the Ansible Galaxy github repo.</dd>
+				<dt>To convert a playbook to a role</dt>
+				<dd><font class="code">cp ./tasks/&lt;rolename&gt;.yml ./&lt;rolename&gt;/tasks/main.yml</font></dd>
+				<dd><font class="code">cp ./templates/baschrc.j2 ./&lt;rolename&gt;/templates/</font></dd>
+			</dl>
+		</li>
+		<li>Variables in roles and variable precedence
+			<dl>
+				<dt>passing variables at the command line override the variable declarations in the .yml files.</dt>
+				<dd>-</dd>
+			</dl>
+		</li>
+		<li>Role-based templates
+			<dl>
+				<dt></dt>
+				<dd>-</dd>
+			</dl>
+		</li>
+		<li>Documenting your role for reuse
+			<dl>
+				<dt>Updating the README.md</dt>
+				<dd>-</b></dd>
+			</dl>
+		</li>
+		<li>Pushing a role to Galaxy
+			<dl>
+				<dt>Galaxy is used to share roles with the greater internet community.</dt>
+				<dt>Worry about this later if ever need to push anything to the web.</dt>
+				<dt>Uses github.</dt>
+				<dt><font class="code">ansible-galaxy login</font></dt>
+				<dt>Github Username: <font class="code">&lt;username&gt;</font></dt>
+				<dt>Password for <i>username</i>: <font class="code">&lt;<i>password</i>&gt;</font></dt>
+				<dd>- Galaxy is installed by default with Ansible.</dd>
+			</dl>
+		</li>
+		<li>Finding roles via Ansilbe Galaxy
+			<dl>
+				<dt><font class="code">ansible-galaxy search create_user</font></dt>
+				<dt>Copy the &lt;Name&gt;</dt>
+				<dt><font class="code">ansible-galaxy install &lt;Name&gt; -p ./</font></dt>
+				<dd>- -p is the path to install the role.</dd>
+				<dd>- the default is global role directory.</dd>
+				<dt>CAn also search via the WebUI.</dt>
+			</dl>
+		</li>
+		<li>Centralizing roles with roles_path
+			<dl>
+				<dt>Default path (glabal path):</dt>
+				<dd><font class="code">/root/.ansible/roles/</font></dd>
+				<dt>To create a central roles directory that does not clutter the ansilbe install dir:</dt>
+				<dd><table style="width:350px">
+					<tr><td class="codecel">sudo mkdir /etc/ansible</td></tr>
+					<tr><td class="codecel">sudo mkdir v</td></tr>
+					<tr><td class="codecel">sudo vi /etc/ansible/ansible.cfg</td></tr>
+					<tr><td class="yamlcel">[defaults]<br>roles_path=/etc/ansible/roles</td></tr>
+					</table></dd>
+			</dl>
+		</li>
+	</ul>
+	<li class="topic">Working with Secrets</li>
+	<ul class="disc">
+		<li>Creating a secrets vault
+			<dl>
+				<dt>Best practice to use the group variables all.</dt>
+				<dt><a href="./files/essential_ansible/4-Secrets/vault.yml">vault.yml</a></dt>
+				<dt><img src="./images/essential-ansible-training-ch4-01.jpg" alt="simple secret"></dt>
+				<dd>- vault file is now encrypted.</dd>
+				<dt>can edit it with <font class="code">ansible-vault edit &lt;filename&gt;</font></dt>
+			</dl>
+		</li>
+		<li>Using secrets in plays
+			<dl>
+				<dt>To use an ecrypted variable:</dd>
+				<dd><font class="code">ansible-playbook -i inventory &lt;filename.yml&gt; <b>--ask-vault-pass</b></font></dd>
+			</dl>
+		</li>
+	</ul>
+	<li class="topic">Network Management with Ansible</li>
+	Not sure I'll ever have to do any of the stuff in this section.
+	<ul class="disc">
+		<li>Selecting IP address with netaddr
+			<dl>
+				<dt><a href="./files/essential_ansible/5-Networks/addresses.yml">addresses.yml</a></dt>
+			</dl>
+		</li>
+		<li>Increment address with netaddr
+			<dl>
+				<dt><a href="./files/essential_ansible/5-Networks/increment.yml">increment.yml</a></dt>
+			</dl>
+		</li>
+		<li>Network interface config for hosts
+			<dl>
+				<dt><a href="./files/essential_ansible/5-Networks/hostint.yml">hostint.yml</a></dt>
+				<dd>- this is a fairly large playbook</dd>
+			</dl>
+		</li>
+		<li>Network device interface config
+			<dl>
+				<dt><a href="./files/essential_ansible/5-Networks/vyos_ip.yml">vyos_ip.yml</a></dt>
+			</dl>
+		</li>
+	</ul>
+	<li class="topic">Idempotent with Ansible Plays</li>
+	<ul class="disc">
+	Review these playbooks for basic idempotentency.
+		<li>Idempotent "prototype" model
+			<dl>
+				<dt><a href="./files/essential_ansible/6-Idempotency/state.yml">state.yml</a></dt>
+				<dd>- copy command will only copy a file if it does not exist or is different than the source.</dd>
+			</dl>
+		</li>
+		<li>Registering discovered state
+			<dl>
+				<dt><a href="./files/essential_ansible/6-Idempotency/idempotent.yml">idempotent.yml</a></dt>
+			</dl>
+		</li>
+		<li>Creating an idempotent play
+			<dl>
+				<dt><a href="./files/essential_ansible/6-Idempotency/create.yml">create.yml</a></dt>
+				<dd>- has an example of conditional operations (when).</dd>
+				<dd>- use "lineinfile" vs "sed" for better idempotency (?)
+			</dl>
+		</li>
+	</ul>
+	<li class="topic">System Infrastructure with AWX/Tower</li>
+	AWX/Tower is the GUI interface for Ansible. Looks like it is an internal URL that will be specific to the company.
+	<ul class="disc">
+		<li>Managing systems of systems</li>
+		<li>Job scheduling</li>
+		<li>Graphing job results</li>
+		<li>Singleton task management</li>
+		<li>Security/vault integration</li>
+		<li>Role-based access/jon management</li>
+	</ul>
+</ol>
+<ul class="disc">
+	<li class="topic">Conclusion</li>
+		<dl>
+			<dt>Ansible</dt>
+			<dt>Next steps
+				<dl>
+					<dt>Checkout what modules are available</dt>
+					<dd>- <a href="https://docs.ansible.com/ansible/latest/modules/modules_by_category.html">Ansible Module Index</a></dd>
+					<dd>- may be easier to do a google search: "andsible" and "what you want to do"<br>
+					this will normally take you right to the module description in the Ansible documentation.</dd>
+				</dl>
+			</dt>
+		</dl>
+	<li>Completed: 7/17/2020</li>
+	<li>Next Course: <a href="./learning-powershell.html">Learning Powershell</a></li>
+</ul>
+<!--
+	<font style="color:red"><b>Topics not updated below here.</b></font><br>
+	<li class="topic">new topic</li>
+	<ul class="disc">
+		<li>topic
+			<dl>  
+				<dt>highlight</dt>
+				<dd>- note</dd>
+				<dt><table style="width:525px">
+					<tr><td class="codecel">git command</td><td>description</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+
+	<li class="topic">new topic</li>
+	<ul class="disc">
+		<li>topic
+			<dl>
+				<dt>highlight</dt>
+				<dd>- note</dd>
+				<dt><table style="width:525px">
+					<tr><tr><td class="codecel">git command</td><td>description</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+-->
+
+</ol>
+<h2 ></h2>
+<p style="color:red"></p>
+<p title="I'm a tooltip"></p>
+<a href="./index.html">Back</a>
+</body>
+</html>
