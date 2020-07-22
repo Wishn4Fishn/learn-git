@@ -1,0 +1,322 @@
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Learning Powershell</title>
+	<link rel="stylesheet" type="text/css" href="mystyle.css">
+	<style>
+		a:link {
+		color: yellow;
+		background-color: transparent;
+		text-decoration: none;
+		}
+
+		a:visited {
+		color: gold;
+		background-color: transparent;
+		text-decoration: none;
+}	</style>
+	
+<!-- space: &nbsp; &emsp; -->
+</head>
+<body style="background-color:black;color:white">
+<h1 style="color:lightgrey;font-size:60px;font-family:courier;" title="LinkedIn course by Matt Hester">
+	<center>Learning Powershell</center>
+</h1>
+<p>
+<ul class="disc">
+	<li class="pstopic">Course Description</li>
+	What is PowerShell? PowerShell is a powerful language used for scripting and automation for your IT Infrastructure. In this short course, author Matt Hester provides an overview of the most current release, PowerShell 5.0, including how to read the PowerShell language and scripts, get help, and use cmdlets.<br><br>
+    Matt then dives into PowerShell's functions and What If statements, working with output, and coding in the Integrated Scripting Environment (ISE). The course wraps up with some tips on using PowerShell for both on-premises and cloud deployments involving Office 365 and Azure.<br>
+	<p>
+	<li class="pstopic">Learning objectives</li>
+		<ul class="disc"> 
+			<li>Identify the purpose of a delimiter.</li>
+			<li>Recognize the tools needed to build a command using the ISE.</li>
+			<li>Identify the options to use when running Get-Service from a remote computer.</li>
+			<li>Recognize the capabilities of four cmdlets.</li>
+			<li>Explain how to transfer aliases from a file into PowerShell.</li>
+			<li>Determine if a cmdlet will generate an error when executed.</li>
+		</ul>
+</ul>
+<ul class="disc">
+	<li class="pstopic">Introduction</li>
+	<ul class="square">
+		<li class="pstopic">Welcome</li>
+		<li class="pstopic">What you should know</li>
+			<ul class="disc">
+				<li class="pstopic">How to access administrative privileges</li>
+				<li class="pstopic">Familiiarity with scripts or .bat files a plus</li>
+				<li class="pstopic">Windows Server fundamentals</li>
+				<li class="pstopic">How to access PowerShell or Command Prompt</li>
+			</ul>
+		<li class="pstopic">Using the exercise files</li>
+			<dl>
+				<dt>Create a test lab</dt>
+				<dt>Modify for your environment</dt>
+				<dt>Files downloaded to:</dt>
+				<dd>- <a href="./files/Ex_Files_PowerShell5.zip">Ex_Files_PowerShell5.zip</a></dd>
+				<dd>- <a href="./files/Glossary_LearningPowerShell5.zip">Glossary_LearningPowerShell5.zip</a></dd>
+			</dl>
+	</ul>
+</ul>
+
+<ol type="1">
+	<li class="pstopic">PowerShell Overview</li>
+	<ul class="disc">
+		<li class="pstopic">Why PowerShell
+			<dl>
+				<dt>PowerShell Basics</dt>
+					<ul class="square">
+						<li class="pstopic">Use PowerShell for consistent, repeatable tasks</li>
+						<li class="pstopic">Work with built-in providers</li>
+						<li class="pstopic">Talk to Active Directory, registry and WMI, natively</li>
+						<li class="pstopic">Bridge the gap between previous languages with aliases</li>
+						<li class="pstopic">Built into many products
+							<dl>
+								<dt>Microsoft IT products</dt>
+								<dt>VMware</dt>
+								<dt>Citrix</dt>
+								<dt>Many more</dt>
+							</dl>
+						</li>
+						<li> Example of an Alias
+							<dl>
+								<dt>dir = ls = gci = Get-ChildItem</dt>
+							</dl>
+						</li>
+					</ul>
+			<dl>
+		</li>
+		<li class="pstopic">How to read the language
+			<dl>
+				<dt>Windows PowerShell Syntax</dt>
+				<dt><img src="./images/learn-powershell-ch1-01.jpg" alt="learn-powershell-ch1-01.jpg"></dt><br>
+				<dt><img src="./images/learn-powershell-ch1-02.jpg" alt="learn-powershell-ch1-02.jpg"></dt>
+				<dt>Power of the Pipe</dt>
+				<dd>- The pipe operator "|"</dd>
+				<dd>- Output from one command becoles the inout for the next.</dd>
+				<dd>- It strings together multiple commands</dd>
+				<dd>- Parameter binding is the key.</dd>
+				<dd>- "|" routes information to the correct parameters--with very littleeffort.</dd>
+				<dd>- Example:<br>&emsp;get-service | out-file c:\services.txt</dd>
+			</dl>
+		</li>
+		<li class="pstopic">Getting help
+			<dl>
+				<dt>Get-Help</dt>
+				<dd>- alias: gh</dd>
+			</dl>
+		</li>
+		<li class="pstopic">Discovering cmdlets and aliases
+			<dl>
+				<dt><font class=ps>Get-Command</font></dt>
+				<dd>- to list the core base commands</dd>
+				<dt>To view the alias for a command:</dt>
+				<dd><font class=ps>Get-Help &lt;commandlet&gt; -full</font></dd>
+				<dd>- just before the examples are the aliases for the commandlet if there are any.</dd>
+				<dt><font class=ps>Get-Help about_Aliases</font></dt>
+				<dd>- help file on how to work with aliases</dd>
+			</dl>
+		</li>
+		<li class="pstopic">Get-Service and Get-Member
+			<dl>
+				<dt><font class=ps>&lt;commandlet&gt; | Get-Member</font></dt>
+				<dd>- to view all the properties, methods, etc of a commandlet</dd>
+			</dl>
+		</li>
+		<li class="pstopic">Chapter Quiz
+			<ol type="1">
+				<li>You asked your development team why they want to use PowerShell. Each one came back with one reason. Select the correct reason.</li>
+				<dt>- all of these answers</dt>
+				<li>Using PowerShell, you can create your own aliases to some specific commands.</li>
+				<dt>- TRUE</dt>
+				<li>Which PowerShell command lists the services?</li>
+				<dt>- get-service</dt>
+				<li><font class=ps>dir</font> and <font class=ps>ls</font> are aliases for <font class=ps>gci</font>.</li>
+				<dt>- FALSE (tricked me, gci is an alias</dt>
+				<li>You have aliases in a file and you need to bring them into PowerShell. Which command should you use?</li>
+				<dt>- <font class=ps>Import-Alias</font> </dt>
+			</ol>
+		</li>
+	</ul>
+	<br>
+	<li class="pstopic">Using PowerShell</li>
+	<ul class="disc">
+		<li>Functions
+			<dl>
+				<dt>Access core functions just like a CmdLet.</dt>
+				<dt>Can write your own functions.</dt>
+				<dd><table style="width:250px">
+					<tr><td class="pscel">PS C:\&gt; function add</td></tr>
+					<tr><td class="pscel">&gt;&gt;&gt; {</td></tr>
+					<tr><td class="pscel">&gt;&gt;&gt; $add =[int](2+2)</td></tr>
+					<tr><td class="pscel">&gt;&gt;&gt; write-output "$add"</td></tr>
+					<tr><td class="pscel">&gt;&gt;&gt; }</td></tr>
+					</table></dd>
+			</dl>
+		</li>
+		<li>Relieving anxiety with -WhatIf and -Confirm
+			<dl>
+				<dt><font class=ps>&lt;commandlet&gt; -WhatIf</font></dt>
+				<dt>- -WhatIf shows what would happen if you executed the command.</dt>
+				<dt><font class=ps>&lt;commandlet&gt; -Confirm</font></dt>
+				<dt>- -Confirm will prompt you to cinfirm each action before it is executed</dt>
+			</dl>
+		</li>
+		<li>ISE and You
+			<dl>
+				<dt><font class=ps>ise</font></dt>
+				<dd>- starts the Integrated Scripting Environment</dd>
+				<dt>File -> New Remote PowerShell Tab
+				<dd>- opens a new tab that will run on a remotre server.</dd>
+				
+			</dl>
+		</li>
+		<li>Working with output
+			<dl>
+				<dt>Exercise Files &gt; Ch02 &gt; 02_04 &gt; <a href="./files/learning_powershell/ch02/02_04/Exercise_file_02_04.ps1">Exercise_file_02_04.ps1</a></dt>
+				<dd>- Examples of so different formating of the output.</dd>
+			</dl>
+		</li>
+		<li>Grid view
+			<dl>
+				<dt>Exercise Files &gt; Ch02 &gt; 02_05 &gt; <a href="./files/learning_powershell/ch02/02_05/Exercise_file_02_05.ps1">Exercise_file_02_05.ps1</a></dt>
+				<dd>- how to send data to a GUI grid view.</dd>
+			</dl>
+		</li>
+		<li>Running PowerShell remotely
+			<dl>
+				<dt>Exercise Files &gt; Ch02 &gt; 02_06 &gt; <a href="./files/learning_powershell/ch02/02_06/Exercise_file_02_06.ps1">Exercise_file_02_06.ps1</a></dt>
+				<dd>- </dd>
+			</dl>
+		</li>
+		<li>Chapter Quiz
+			<ol type="1">
+				<li>Select the cmdlet that will generate an error when run.</li>
+				<dt>- <font class=ps>Get-Service | Format-Table displayName, status | Out-GridView</font></dt>
+				<li>You need to display all the services' properties in a key-value pair format separated by a colon. Which command would you use?</li>
+				<dt>- <font class=ps>get-service | format-list *</font></dt>
+				<dd>- must not have grasped what was being asked. got it wrong twice.</dd>
+				<li>What type is NOT allowed when exporting from PowerShell to a file is _____.</li>
+				<dt>- none of these answers</dt>
+			</ol>
+		</li>
+	</ul>
+	<br>
+	<li class="pstopic">Taking PowerShell On Premises and Online</li>
+	<ul class="disc">
+		<li>Finding and installing modules
+			<dl>
+				<dt>Module</dt>
+				<dd>- collection of cmdlets for a particular function or application</dd>
+				<dt><font class=ps>Get-Service -ListAvailable</font></dt>
+				<dd>- lists all available modules that have not been loaded.</dd>
+				<dd>- PowerShell 3.0 introduced autoload. so if you call a cmdlet in module that has not been load, PowerShell will automatically load it.</dd>
+				<dt>To manually load a module:</dt>
+				<dd>- <font class=ps>Import-Module -Name &gt;module name&gt;</font></dd>
+				<dt>To see commands available in a module:</dt>
+				<dd>- <font class=ps>Get-Command -Module &gt;module name&gt;</font></dd>
+				<dt><a href="https://gallery.technet.microsoft.com/scriptcenter">Technet Script Center</a></dt>
+				<dd>- Scripts available for download.(9000+ as of 7/22/20)</dd>
+			</dl>
+		</li>
+		<li>Server cmdlets
+			<dl>
+				<dt>Exercise Files &gt; Ch03 &gt; 03_02 &gt; <a href="./files/learning_powershell/ch03/03_02/Exercise_file_03_02.ps1">Exercise_file_03_02.ps1</a></dt>
+				<dd>- Example of installing Windows feature and setting up a backup.</dd>
+			</dl>
+		</li>
+		<li>Office 365 PowerShell
+			<dl>
+				<dt>Connect to Office 365 with PowerShell</dt>
+				<dd>Two Ways
+					<ol type="1">
+						<li>Azure Active Directory PowerShell for Graph module</li>
+						<dt>- <font class=ps>Install-Module -Name AzureAD</font></dt>
+						<li>Microsoft Azure Active Directory Module for Windows PowerShell</li>
+						<dt>- Install the 64bit verwswion of the Microsoft Online Servioces Sign-in Assistant</dt>
+						<dt>- <font class=ps>Install-Module -Name MSOnline</font></dt>
+					</ol>
+				</dd>
+				<dt>How to <a href="https://lnkd.in/gN957vf">Connect to Office 365 PowerShell</a></dt>
+			</dl>
+		</li>
+		<li>Azure PowerShell
+			<dl>
+				<dt><img src="./images/learn-powershell-ch3-01.jpg" alt="Azure Management Layout"></dt><br>
+				<dt>Everything done in Azure is done in the Azure Resource Manager</dt>
+				<dt>Manage Azure with PowerShell</dt>
+				<dd>Azure PowerShell</dd>
+				<dd>- Client-based shell based on Windows (.NET), Linux or masOS (.NET Core)</dd>
+				<dd>Azure Cloud Shell</dd>
+				<dd>- Browser-based environment for PowerShell and Bash</dd>
+				<dd>- <a href="https://portal.azure.com">Cloud Shell</a> in Azure to run PowerShell commands.</dd>
+				<dd>Azure command-line interface (CLI)</dd>
+				<dd>- CLI for Windows, Linux and macOS</dd>
+				<dd>- Bash on Windows Subsystem for Linux</dd>
+				<dt>Install Azure module</dt>
+				<dd>- <font class=ps>Install-Module az -AllowClobber -Scope currentuser</font></dd>
+			</dl>
+		</li>
+		<li>Chapter Quiz
+			<ol type="1">
+				<li>With PowerShell 3.0, running a command from a module that has not been loaded yet will automatically load the module.</li>
+				<dt>- TRUE</dt>
+			</ol>
+		</li>
+	</ul>
+</ol>
+<ul class="disc">
+	<li class="pstopic">Conclusion</li>
+		<dl>
+			<dt>Next steps
+				<dl>
+					<dt>Create a test environment</dt>
+					<dt>Start simple</dt>
+					<dt>Get-Help and Get-Command</dt>
+					<dt>Leverage <a href="https://gallery.technet.microsoft.com/scriptcenter">Script Center</a>.</dt>
+					
+				</dl>
+			</dt>
+		</dl>
+	<li>Completed: 7/22/2020</li>
+	<li>Next Course: <a href="./powershell_5_essential_training.html">PowerShell 5 Essential Training</a></li>
+</ul>
+<!--
+	<font style="color:red"><b>Topics not updated below here.</b></font><br>
+	<li class="pstopic">new topic</li>
+	<ul class="disc">
+		<li>topic
+			<dl>  
+				<dt>highlight</dt>
+				<dd>- note</dd>
+				<dt><table style="width:525px">
+					<tr><td class="codecel">git command</td><td>description</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+
+	<li class="pstopic">new topic</li>
+	<ul class="disc">
+		<li>topic
+			<dl>
+				<dt>highlight</dt>
+				<dd>- note</dd>
+				<dt><table style="width:525px">
+					<tr><tr><td class="codecel">git command</td><td>description</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+-->
+
+</ol>
+<h2 ></h2>
+<p style="color:red"></p>
+<p title="I'm a tooltip"></p>
+<a href="./index.html">Back</a>
+</body>
+</html>

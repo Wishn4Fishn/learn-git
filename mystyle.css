@@ -4,6 +4,11 @@ font.code {
 	background-color:lightgrey;
 	color:black;
 }
+font.ps {
+	font-family: Courier New, Courier, monospace;
+	background-color:blue;
+	color:lightgrey;
+}
 font.yaml {
 	font-family: Courier New, Courier, monospace;
 	background-color:white;
@@ -12,6 +17,13 @@ td.codecel {
 	font-family: Courier New, Courier, monospace;
 	background-color:lightgrey;
 	color:black;
+}
+td.pscel {
+	color:lightgrey;
+	font-family: Courier New, Courier, monospace;
+	background-color:blue;
+	vertical-align:top;
+	text-align:left;
 }
 td.outputcel {
 	font-family: Courier New, Courier, monospace;
@@ -33,6 +45,10 @@ td.yamlcel {
 	background-color:white;
 	vertical-align:top;
 	text-align:left;
+}
+
+li.pstopic {
+	color:white;
 }
 li.topic {
 	color:blue;
