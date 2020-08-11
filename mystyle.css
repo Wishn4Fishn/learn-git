@@ -13,6 +13,10 @@ font.yaml {
 	font-family: Courier New, Courier, monospace;
 	background-color:white;
 }
+td.center {
+	vertical-align:top;
+	text-align:center;
+}
 td.codecel {
 	font-family: Courier New, Courier, monospace;
 	background-color:lightgrey;
