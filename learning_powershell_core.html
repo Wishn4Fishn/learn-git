@@ -1,0 +1,374 @@
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Learning Powershell Core</title>
+	<link rel="stylesheet" type="text/css" href="mystyle.css">
+	<style>
+		a:link {
+		color: yellow;
+		background-color: transparent;
+		text-decoration: none;
+		}
+
+		a:visited {
+		color: gold;
+		background-color: transparent;
+		text-decoration: none;
+}	</style>
+	
+<!-- space: &nbsp; &emsp;  &lt; &gt; -->
+</head>
+<body style="background-color:black;color:white">
+<h1 style="color:lightgrey;font-size:60px;font-family:courier;" title="LinkedIn course by Adam Bertram">
+	<center>Learning Powershell Core</center>
+</h1>
+<p>
+<ul class="disc">
+	<li class="pstopic">Course Description</li>
+	PowerShell Core—the latest iteration of the powerful scripting language—is open-source, cross-platform, and full of helpful features. In this course, instructor Adam Bertram helps you get up and running with PowerShell Core, explaining what you need to know to use PowerShell to automate a variety of day-to-day IT tasks. Adam covers the basics of working with PowerShell Core, including how to run commands, install and update modules, and work with basic functions. Plus, he highlights the differences between Windows PowerShell and PowerShell Core.<br>
+	<p>
+	<li class="pstopic">Learning objectives</li>
+		<ul class="disc"> 
+			<li>The PowerShell pipeline</li>
+			<li>Finding and using modules</li>
+			<li>Windows PowerShell vs. PowerShell Core</li>
+			<li>PowerShell remoting on Windows and Linux</li>
+			<li>Windows PowerShell vs. PowerShell Core</li>
+			<li>Going from console to script</li>
+			<li>Building a simple script</li>
+		</ul>
+</ul>
+<ul class="disc">
+	<li class="pstopic">Introduction</li>
+	<ul class="square">
+		<li class="pstopic">Get Started with PowerShell Core</li>
+			<dl>
+				<dt>Command Structure</dt>
+				<dd>- Verb-Noun</dd>
+				<dd>- DoSomething-ToSomething</dd>
+				<dd>- Get-Process</dd>
+				<dt>PowerShell is Cmd on Steriods</dt>
+				<dd>- All cmd commands still work</dd>
+				<dd>- EXEs will still run</dd>
+				<dd>- Thousands of new PowerShell commands</dd>
+				<dd>- Aliases</dd>
+			</dl>
+		<li class="pstopic">What you should know</li>
+			<ul class="disc">
+				<li class="pstopic">Basic IT administration skills</li>
+				<li class="pstopic">Know what PowerShell is</li>
+			</ul>
+		<li class="pstopic">What you should have</li>
+			<ul class="disc">
+				<li class="pstopic">A Windows 10 machine</li>
+				<li class="pstopic">An Ubuntu Linux machine (optional)</li>
+				<li class="pstopic">An internet connection</li>
+				<li class="pstopic">Rights to install new software</li>
+				<li class="pstopic">Access to a few remote systems (optional)</li>
+			</ul>
+	</ul>
+</ul>
+
+<ol type="1">
+	<li class="pstopic">Installing PowerShell</li>
+	<ul class="disc">
+		<li class="pstopic">Installing PowerShell Core on Windows
+			<dl>
+				<dt>PowerShell Core is in GitHub</dt>
+				<dd>- <a href="https://github.com/PowerShell/PowerShell/releases">PowerShell Releases</a></dd>
+			<dl>
+		</li>
+		<li class="pstopic">Installing PowerShell Core on Linux
+			<dl>
+				<dt>Ubuntu</dt>
+				<dd>sudo apt-get update</dd>
+				<dd>wget -q https://packages.microsoft.com/confdig/ubuntu/18.04/packages-microsoft-prod.deb</dd>
+				<dd>sudo dpkg -i packages-microsoft-prod.deb</dd>
+				<dd>sudo apt-get install -y powershell</dd>
+				
+				<dt>CentOS 7</dt>
+				<dd>sudo yum update</dd>
+				<dd>curl https://packages.microsoft.com/config/rhel/7/prod.repo | sudo tee /etc/yum.repos.d/microsoft.repo</dd>
+				<dd>sudo yum install -y powershell</dd
+				<dt>pwsh to start powershell</dt>
+			</dl>
+		</li>
+		<li class="pstopic">Chapter Quiz
+			<dl>
+				<dt>What automatic variable allows you to check the version of PowerShell you're currently running?</dt>
+				<dd>- $PSVersionTable</dd>
+				<dd>- $PSVersionTable is an automatic variable that will always return version information in PowerShell.</dd>
+				<dt>Can Windows PowerShell and PowerShell Core be installed at the same time?</dt>
+				<dd>- TRUE</dd>
+				<dd>- Since PowerShell Core is a separate EXE (pwsh.exe), it can run concurrently with Windows PowerShell (powershell.exe).</dd>
+			</dl>
+		</li>
+	</ul>
+	<br>
+	<li class="pstopic">Using PowerShell</li>
+	<ul class="disc">
+		<li>Running commands
+			<dl>
+				<dt>Command Structure</dt>
+				<dd>- Verb-Noun</dd>
+				<dd>- DoSomething-ToSomething</dd>
+				<dd>- Get-Process</dd>
+				<dt>PowerShell is Cmd on Steriods</dt>
+				<dd>- All cmd commands still work</dd>
+				<dd>- EXEs will still run</dd>
+				<dd>- Thousands of new PowerShell commands</dd>
+				<dd>- Aliases</dd>
+				<dt>To getr the list of Microsoft approved verbs:</dt>
+				<dd>- <font class=ps>Get-Verb</font></dd>
+				<dd>- output is different between PS and PS core.
+			</dl>
+		</li>
+		<li>Getting help
+			<dl>
+				<dt>See Help sections in <a href="./learn-powershell.html">Learning PowerShell</a> and <a href="./powershell_5_essential_training.html">PowerShell 5 Essential Training</a></dt>
+				<dt>Update help regularly:</dt>
+				<dd><font class=ps>Update-Help</font></dd>
+			</dl>
+		</li>
+		<li>The pipeline
+			<dl>
+				<dt>Objects</dt>
+				<dd>- Properties</dd>
+				<dd>&emsp;details about an object</dd>
+				<dd>- Methods</dd>
+				<dd>&emsp;actions an object can take</dd>
+				<dt>Pipeline + Objects = Power</font></dt>
+				<dt>Use pipeline to pass output from one command to another.</dt>
+				
+			</dl>
+		</li>
+		<li class="pstopic">Chapter Quiz
+			<dl>
+				<dt>What is the main difference between the PowerShell pipeline and a cmd.exe pipeline?</dt>
+				<dd>- The PowerShell pipeline passes objects from command to command while cmd only passes simple strings.</dd>
+				<dd>- The most prominent difference between the PowerShell pipeline and other pipelines is that PowerShell can pass rich objects from one command to another.</dd>
+				<dt>How many levels of help content exists for commands that dictate how much information is displayed when retrieving help content?</dt>
+				<dd>- 3</dd>
+				<dd>- There are three levels of help; partial (or default), detailed and full.</dd>
+				<dt>What command is used to discover other commands in PowerShell Core?</dt>
+				<dd>- Get-Command</dd>
+				<dd>- The Get-Command command is the only command that allows you to discover commands.</dd>
+			</dl>
+		</li>
+	</ul>
+	<br>
+	<li class="pstopic">Using PowerShell</li>
+	<ul class="disc">
+		<li>Finding and using modules
+			<dl>
+				<dt>Modules and What They're Made Of</dt>
+				<dd>- the module itself, which is a PSM1 file containing commands, and a manifest file, which contains metadata about the module.</dd>
+				<dt><font class=ps>Get-Module</font> only shows the modules that are loded not all the modules available on the file system.</dt>
+				<dd>- use <font class=ps>-ListAvailable</font> to see all available on the curent files system.</dd>
+				<dt><font class=ps>Remove-Module</font> removes the module from the current session. It does not remove it from the file system.</dt>
+				<dt><font class=ps>Import-Module</font> the load a module from the file system.</dt>
+			</dl>
+		</li>
+		<li>PowerShell Gallery
+			<dl>
+				<dt><a href="https://www.powershellgallery.com">PowerShell Gallery</a>in an online repository with additional modules.</dt>
+				<dt><font class=ps>Find-Module</font> to search modules in the PowerShell Gallery. Majority of modules are for Windows.</dt>
+				<dd>- use <font class=ps>-Tag 'PSEdition_Core'</font> to see modules the author says should work on both Linux and Windows. It us up to the author to tag it as PowerShell Core compatable so it may not be accurate. Best just to download and try it</dd>
+			</dl>
+		</li>
+		<li>Install, uninstall and update modules
+			<dl>
+				<dt><font class=ps>Find-Module -Name &lt;modulename&gt; | Install-Module</font> to find and install a module.</dt>
+				<dt><font class=ps>Get-Module -Name &lt;modulename&gt; | Uninstall-Module</font> to remove it from the file system. Still need to run <font class=ps>Remove-Module</font> to remove it from the current session.</dt>
+				<dt>Use <font class=ps>Update-Module</font> to update modules that were installed from the PowerShell Gallery.</dt>
+			</dl>
+		</li>
+		<li>Functions
+			<dl>
+				<dt>Undserstanding Functions</dt>
+				<dd>'Command' -eq 'Functions'</dd>
+				<dd>- Accomplish one specific task</dd>
+				<dd>- The building blocks of PowerShell</dd>
+				<dt><font class=ps>Get-Command | Group-Object -Property CommandType</font></dt>
+				<dd>- Cmdlet is a compiled command</dd>
+				<dt>Basic function written at the commandline:</dt>
+				<dd><img src="./images/learning-powershell-core-00.jpg" alt="basic function written at the commandline"></dd>
+				<dt>Same function with a parameter:</dt>
+				<dd><img src="./images/learning-powershell-core-01.jpg" alt="function with a parameter"></dd>
+				
+			</dl>
+		</li>
+		<li>Chapter Quiz
+			<dl>
+				<dt>How do you update a module with the Update-Module command that wasn't downloaded from the PowerShell Gallery?</dt>
+				<dd>- You can't.</dd>
+				<dd>- You are only able to update modules installed locally from the PowerShell Gallery with the Update-Module command that were originally downloaded from the PowerShell Gallery.</dd>
+				<dt>What is the primary purpose of a module?</dt>
+				<dd>- To contain similar commands to more easily transport and manage.</dd>
+				<dd>- Even though a module may reference external files and utilities, it doesn't necessarily "encapsulate" them to make them easier to run.</dd>
+				<dt>What is a major benefit of building functions rather than scripts?</dt>
+				<dd>- Functions allow you to build encapsulated, reusable code snippets that you can call with other commands and scripts.</dd>
+				<dd>- Functions allow you to build code that can be called from many other places preventing you from recreating the wheel.</dd>
+			</dl>
+		</li>
+	</ul>
+	<br>
+	<li class="pstopic">Remote Resource Management</li>
+	<ul class="disc">
+		<li>PowerShell remoting on Windows
+			<dl>
+				<dt>Sessions</dt>
+				<dd>1. Establish a session. Similar to tellnet or ssh to a remote computer.</dd>
+				<dd>2. Run code from a script to run on a remotre computer.</dd>
+				<dt><font class=ps>Enable-PSRemoting</font> needs to be run on the remote computer.</dt>
+				<dd>- winrm quickconfig does something simliar.</dd>
+				<dd>- use <font class=ps>-ListAvailable</font> to see all available on the curent files system.</dd>
+				<dt><font class=ps>Enable-PSRemoting</font></dt>
+				<dt><font class=ps>$credential = Get-Credential</font></dt>
+				<dt><font class=ps>Invoke-Command -ComputerName &lt;ip address&gt; -Credential $credential -ScriptBlock { hostname }</font></dt>
+				<dt><font class=ps>Set-Item WSMan:\localhost\Client\TrustedHosts -Value *</font></dt>
+			</dl>
+		</li>
+		<li>PowerShell remoting on Linux
+			<dl>
+				<dt>OpenSSH and PowerShell</dt>
+				<dt><font class=code>sudo apt install openssh-server</font></dt>
+				<dt><font class=code>sudo vi /etc/ssh/sshd_config</font></dt>
+				<dd>- add a Subsystem<br>Subsystem powershell /usr/bin/pwsh -sshs -NoLogo -NoProfile<br>set PasswordAuthentication to yes<br>sudo service sshd restart</dd>
+				<dt><font class=ps>Invoke-Command -ComputerName &lt;ip address&gt; -ScriptBlock { hostname }</font></dt>			
+			</dl>
+		</li>
+		<li>Chapter Quiz
+			<dl>
+				<dt>What is the protocol that allows you to use PowerShell Remoting from Windows to Linux?</dt>
+				<dd>- SSH</dd>
+				<dd>- SSH is the only supported protocol that PowerShell Remoting uses to connect to Linux.</dd>
+				<dt>How would you run commands inside of modules that don't exist on your local computer?</dt>
+				<dd>- Implicit Remoting</dd>
+				<dd>- It IS possible through implicit remoting.</dd>
+			</dl>
+		</li>
+	</ul>
+	<br>
+	<li class="pstopic">Windows PowerShell vs. PowerShell Core</li>
+	<ul class="disc">
+		<li>Cross-platform challenges
+			<dl>
+				<dt>PowerShell Core Gotchas</dt>
+				<dd>- Performance</dd>
+				<dd>- Command differences</dd>
+				<dd>- Limited command set</dd>
+				<dt>To see the commands not in PowerShell Core:</dt>
+				<dd>In PowerShell Core: <font class=ps>(Get-Command).Name | Set-Content -Path .\powershell-core-commands.txt</font></dd>
+				<dd>In PowerShell     : <font class=ps>(Get-Command).Name | Set-Content -Path .\powershell-commands.txt</font></dd>
+				<dd><font class=ps>Get-Content -Path '.\powershell-commands.txt' | Where-Object {$_ -notin (Get-Content -Path '.\powershell-core-commands.txt')} | Sort-Object</font></dd>
+			</dl>
+		</li>
+		<li>The WindowsCompatibility module
+			<dl>
+				<dt>The Windows Compatibility module uses local PowerShell remote sessions.</dt>
+				<dd><font class=ps>Install-Module WindowsCompatibility</font></dd>
+				<dd><font class=ps>Get-Command -Module WindowsCompatibility</font></dd>
+				<dd><font class=ps>Invoke-WinCommand -ScriuptBlock {Get-Clipboard}</font></dd>
+			</dl>
+		</li>
+		<li>Chapter Quiz
+			<dl>
+				<dt>What is the primary purpose of the WindowsCompatibility module?</dt>
+				<dd>- to run Windows PowerShell commands inside of PowerShell Core</dd>
+				<dd>- The WindowsCompatibility module uses implicit remoting to connect to a Windows PowerShell remoting session and make Windows PowerShell commands available in PowerShell Core.</dd>
+				<dt>What is one difference between Windows PowerShell and PowerShell Core?</dt>
+				<dd>- Performance</dd>
+				<dd>- PowerShell Core offers significant performance improvements in commands such as Sort-Object and Group-Object among others.</dd>
+			</dl>
+		</li>
+	</ul>
+	<br>
+	<li class="pstopic">Get Scripting</li>
+	<ul class="disc">
+		<li>From console to script
+			<dl>
+				<dt>Use <a href="https://code.visualstudio.com">Visual Studio Code</a> to write scripts for PowerShell Core similar to the PowerShell ISE. Visual Studio Code replaces the ISE.</dt>
+				<dd>- Install the PowerShell extension.</dd>
+			</dl>
+		</li>
+		<li>Building tools: Gathering information
+			<dl>
+				<dt>Server Inventory Reports on the Cheap</dt>
+				<dt>Use <font class=ps>Get-Cim*</font> and <font class=ps>Get-WmiObject</font> to query system information.</dt>
+				<dd>- used <font class=ps>Get-CimClass</font> and <font class=ps>Get-CimInstance</font> in the demo.</dd>
+				<dd>- do googgle searches to find wear in the WMI or CIM that the information resides.</dd>
+			</dl>
+		</li>
+		<li>Building tools: The power of scripting
+			<dl>
+				<dt>Started with a demo script to pull OS name and total memery from a remote server using a CimSession. Course did not include the code and it was too much to copy and screen shots would have been hard to read.</dt>
+			</dl>
+		</li>
+		<li>Chapter Quiz
+			<dl>
+				<dt>What is the first thing you should do to build a PowerShell script?</dt>
+				<dd>- Define what you want your script to do.</dd>
+				<dd>- Before any code is written, it's important to first define what you're looking for. Do not just jump into coding right away.</dd>
+				<dt>The Visual Studio Code IDE natively supports PowerShell syntax highlighting and other PowerShell-specific features.</dt>
+				<dd>- FALSE</dd>
+				<dd>- Visual Studio Code is a universal code editor and supports many languages. However, to get syntax highlighting and other PowerShell-specific features, you must install the PowerShell extension.</dd>
+			</dl>
+		</li>
+	</ul>
+	<br>
+</ol>
+<ul class="disc">
+	<li class="pstopic">Conclusion</li>
+		<dl>
+			<dt>Next steps
+				<dl>
+					<dt>Start scripting</dt>
+					<dt>Find a real problem</dt>
+					<dt>Automate a mundane process</dt>
+					<dt>Blog: <a href="https://adamtheautomator.com">Adam the Automator</a></dt>
+					<dt>Forum: <a href="https://powershell.org">PowerShell.Org</a></dt>
+				</dl>
+			</dt>
+		</dl>
+	<li>Completed: 8/11/2020</li>
+	<li>Next Course: <a href="./learning_kubernetes.html">Learning Kubernetes</a></li>
+</ul>
+<!--
+	<font style="color:red"><b>Topics not updated below here.</b></font><br>
+	<li class="pstopic">new topic</li>
+	<ul class="disc">
+		<li>topic
+			<dl>  
+				<dt>highlight</dt>
+				<dd>- note</dd>
+				<dt><table style="width:525px">
+					<tr><td class="codecel">git command</td><td>description</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+
+	<li class="pstopic">new topic</li>
+	<ul class="disc">
+		<li>topic
+			<dl>
+				<dt>highlight</dt>
+				<dd>- note</dd>
+				<dt><table style="width:525px">
+					<tr><tr><td class="codecel">git command</td><td>description</td></tr>
+					</table>
+				</dt>
+			</dl>
+		</li>
+	</ul>
+-->
+
+</ol>
+<h2 ></h2>
+<p style="color:red"></p>
+<p title="I'm a tooltip"></p>
+<a href="./index.html">Back</a>
+</body>
+</html>
